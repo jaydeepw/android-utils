@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">Utils</string>
+    <string name="platform">Android</string>
+    <string name="no_internet">Internet connection not available</string>
+
+</resources>
