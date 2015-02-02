@@ -25,8 +25,6 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.github.kevinsawicki.http.HttpRequest;
-
 import android.util.Log;
 
 public class NetworkManager {
@@ -510,9 +508,7 @@ public class NetworkManager {
 				Log.v( TAG, "#postDataToUrl FileNotFoundException Error from the errorStream. Reason: " + errMsg );
 				outputData.put( GlobalConstants.API_OUTPUT_STATUS_MESSAGE, errMsg );	
 			}
-				
 		} catch ( IOException e ) {
-			
 			Log.e( TAG, "#postDataToUrl IOException while making an API call. Reason: " + e.getMessage() );
 			if( conn.getErrorStream() != null ) {
 				String errMsg = readStream( conn.getErrorStream() );
@@ -565,41 +561,4 @@ public class NetworkManager {
 			conn.addRequestProperty( headerName, headerValue );
 		}	// end for
 	}
-	
-	private void addHeaders( HttpRequest conn, ArrayList<KeyValueTuple> headers ) {
-		
-		if( headers == null || headers.size() == 0 )
-			return;
-		
-		for ( int i = 0; i < headers.size(); i++ ) {
-			KeyValueTuple tuple = headers.get(i);
-			String name = tuple.mKey;
-			String value = tuple.mValue;
-			
-			Log.v( TAG, "#addHeaders headerName: " + name + " headerValue: " + value );
-			
-			conn.header(name, value);
-		}	// end for
-	}
-	
-	/***
-	 * Do HTTP POST request with {@link org.apache.http.protocol.HTTP#CONTENT_TYPE} and  {@link HttpHeader#ACCEPT} set
-	 * to JSON.
-	 * ***/
-	public String doPost(String url, String data, HashMap<String, Object> outputData, ArrayList<KeyValueTuple> headers) {
-		Log.v( TAG, "#doPost url: " + url);
-		
-		HttpRequest httpRequest = HttpRequest.post(url)
-				.header(HTTP.CONTENT_TYPE, MimeType.APPLICATION_JSON)
-				.header(HttpHeader.ACCEPT, MimeType.APPLICATION_JSON);
-		
-		addHeaders(httpRequest, headers);
-		
-		httpRequest.send(data);
-		
-		outputData.put( GlobalConstants.API_OUTPUT_STATUS_CODE, httpRequest.code() );
-		
-		return httpRequest.body();
-	}
-
 }

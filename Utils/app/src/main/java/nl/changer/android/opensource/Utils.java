@@ -1541,8 +1541,6 @@ public class Utils {
 	}
 
 	/**
-	 * 
-	 * 
 	 * @deprecated Use {@link nl.changer.android.opensource.DateUtils#getMonthAbbreviated(String)} instead.
 	 * 
 	 * <br/>
@@ -1704,41 +1702,7 @@ public class Utils {
 		return image;
 	}
 
-	/****
-	 * @deprecated Use {@link ViewUtils#showPhotoWithRoundedCorners(android.widget.ImageView, String, int)}
-	 * 
-	 * <br/>
-	 * <br/>
-	 *             Show a photo with a rounded corners.
-	 * @param cornerRadius
-	 *            Should NOT be too large, ideally the value should be 8 or 10. Pass -1 if you dont
-	 *            want the rounded corners
-	 ****/
-	public static void showPhotoWithRoundedCorners(ImageView photo, String url, int cornerRadius) {
-		/*DisplayImageOptions options = null;
-
-		if (cornerRadius != -1) {
-			options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisc(true).displayer(new RoundedBitmapDisplayer(cornerRadius)) // rounded
-																																					// corner
-																																					// bitmap
-					.build();
-		} else {
-			// no rounded corners
-			options = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisc(true).build();
-		}
-
-		if (!TextUtils.isEmpty(url) && !url.equalsIgnoreCase("null")) {
-			photo.setVisibility(View.VISIBLE);
-			ImageLoader.getInstance().displayImage(url, photo, options);
-		} else {
-			// hide the photos in a converted view so that
-			// older photos are not visible
-			// and user does not get a perception of wrong photos
-			// photo.setVisibility( View.INVISIBLE );
-		}*/
-	}
-
-	/****
+	/**
 	 * @deprecated Use {@link nl.changer.android.opensource.DateUtils#parseDate(String)} instead.
 	 * 
 	 * <br/>
@@ -1859,7 +1823,8 @@ public class Utils {
 		} catch (MalformedURLException e) {
 			return false;
 		}
-		try {
+
+        try {
 			u.toURI();
 		} catch (URISyntaxException e) {
 			return false;
@@ -1903,8 +1868,9 @@ public class Utils {
 		boolean isMedia = false;
 
 		if (mimeType != null) {
-			if (mimeType.startsWith("image/") || mimeType.startsWith("video/") || mimeType.startsWith("audio/"))
-				isMedia = true;
+			if (mimeType.startsWith("image/") || mimeType.startsWith("video/") || mimeType.startsWith("audio/")) {
+                isMedia = true;
+            }
 		} else {
 			isMedia = false;
 		}
@@ -1925,10 +1891,11 @@ public class Utils {
 
 		String[] arr = url.split("#");
 
-		if (arr.length == 2)
-			return arr[0];
-		else
-			return url;
+		if (arr.length == 2) {
+            return arr[0];
+        } else {
+            return url;
+        }
 	}
 
 	/****
@@ -1989,23 +1956,7 @@ public class Utils {
 			return false;
 	}
 
-	/***
-	 * @deprecated Use {@link nl.changer.android.opensource.Utils#formatSize(long)}
-	 * **/
-	public static int toMegaBytes(long byteCount) {
-		long kiloBytes = byteCount / 1000;
-		int megaBytes = (int) (kiloBytes / 1000);
-		return megaBytes;
-	}
-
-	/***
-	 * @deprecated Use {@link nl.changer.android.opensource.Utils#formatSize(long)}
-	 * **/
-	public static long toKiloBytes(long byteCount) {
-		return (byteCount / 1000);
-	}
-
-	/****
+	/**
 	 * Get the media data from the one of the following media {@link android.content.ContentProvider} This method
 	 * should not be called from the main thread of the application.
 	 * <ul>
@@ -2018,7 +1969,7 @@ public class Utils {
 	 *            Context object
 	 * @param uri
 	 *            Media content uri of the image, audio or video resource
-	 ****/
+	 */
 	public static byte[] getMediaData(Context ctx, Uri uri) {
 		// TODO: move to MediaUtils
 		if (uri == null) {
@@ -2069,7 +2020,7 @@ public class Utils {
 	 ****/
 	public static long getMediaSize(Context ctx, Uri mediaUri) {
 		// TODO: move to MediaUtils
-		Cursor cur = ctx.getContentResolver().query(mediaUri, new String[] { Media.SIZE }, null, null, null);
+		Cursor cur = ctx.getContentResolver().query(mediaUri, new String[]{Media.SIZE}, null, null, null);
 		long size = -1;
 
 		try {
@@ -2087,23 +2038,25 @@ public class Utils {
 				} // end while
 			} else if (cur.getCount() == 0) {
 				Log.e(TAG, "#getMediaSize cur size is 0. File may not exist");
-			} else
-				Log.e(TAG, "#getMediaSize cur is null");
+			} else {
+                Log.e(TAG, "#getMediaSize cur is null");
+            }
 		} finally {
-			if (cur != null && !cur.isClosed())
-				cur.close();
+			if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
 		}
 
 		return size;
 	}
 
-	/****
+	/**
 	 * @deprecated Use {@link nl.changer.android.opensource.MediaUtils#getDuration(android.content.Context, android.net.Uri)} instead. <br/>
 	 *             Get runtime duration of media such as audio or video in milliseconds
 	 ****/
 	public static long getMediaDuration(Context ctx, Uri mediaUri) {
 		// TODO: move to MediaUtils
-		Cursor cur = ctx.getContentResolver().query(mediaUri, new String[] { Video.Media.DURATION }, null, null, null);
+		Cursor cur = ctx.getContentResolver().query(mediaUri, new String[]{Video.Media.DURATION}, null, null, null);
 		long duration = -1;
 
 		try {
@@ -2121,11 +2074,13 @@ public class Utils {
 				} // end while
 			} else if (cur.getCount() == 0) {
 				Log.e(TAG, "#getMediaDuration cur size is 0. File may not exist");
-			} else
-				Log.e(TAG, "#getMediaDuration cur is null");
+			} else {
+                Log.e(TAG, "#getMediaDuration cur is null");
+            }
 		} finally {
-			if (cur != null && !cur.isClosed())
-				cur.close();
+			if (cur != null && !cur.isClosed()) {
+                cur.close();
+            }
 		}
 
 		return duration;
@@ -2137,7 +2092,7 @@ public class Utils {
 	public static String getMediaFileName(Context ctx, Uri mediaUri) {
 		// TODO: move to MediaUtils
 		String colName = MediaColumns.DISPLAY_NAME;
-		Cursor cur = ctx.getContentResolver().query(mediaUri, new String[] { colName }, null, null, null);
+		Cursor cur = ctx.getContentResolver().query(mediaUri, new String[]{colName}, null, null, null);
 		String dispName = null;
 
 		try {
@@ -2168,9 +2123,9 @@ public class Utils {
 		return dispName;
 	}
 
-	/****
+	/***
 	 * Gets media type from the Uri.
-	 ****/
+	 **/
 	public static String getMediaType(Context ctx, Uri uri) {
 		// TODO: move to MediaUtils
 		if (uri == null) {
@@ -2260,54 +2215,14 @@ public class Utils {
 		return sb;
 	}
 
-	/****
-	 * Makes the dialog fill 90% of screen width and minHeight 20% of screen height Ideally this
-	 * method should not be used. Use appropriate theme for the activity to give a dialog like UI.
-	 * Alternatively you can also use AlertDialog.Builder to create the same effect.
-	 * ***/
-	public static View dialogify(Activity ctx, int dialogLayoutId) {
-		return dialogify(ctx, dialogLayoutId, 0.9f, 0.2f);
-	}
-
-	/****
-	 * Helps given customized look to the dialog UI. Ideally this method should not be used. Use
-	 * appropriate theme for the activity to give a dialog like UI. Alternatively you can also use
-	 * AlertDialog.Builder to create the same effect.
-	 * ***/
-	public static View dialogify(Activity ctx, int dialogLayoutId, float minWidth, float minHeight) {
-		// retrieve display dimensions
-		Rect displayRectangle = new Rect();
-		Window window = ctx.getWindow();
-		window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-
-		// inflate and adjust layout
-		LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(dialogLayoutId, null);
-
-		if (minWidth != -1) {
-			layout.setMinimumWidth((int) (displayRectangle.width() * minWidth));
-		}
-
-		if (minHeight != -1) {
-			layout.setMinimumHeight((int) (displayRectangle.height() * minHeight));
-		}
-
-		return layout;
-	}
-
-	/****
-	 * Makes the dialog fill 90% width.
-	 * ***/
-	public static View dialogifyWidth(Activity ctx, int dialogLayoutId) {
-		return dialogify(ctx, dialogLayoutId, 0.9f, -1);
-	}
-
-	/***
+	/**
 	 * Formats given size in bytes to KB, MB, GB or whatever. This will work up to 1000 TB
-	 * ***/
+	 *
+     * **/
 	public static String formatSize(long size) {
-		if (size <= 0)
-			return "0";
+
+		if (size <= 0) return "0";
+
 		final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
 		int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
 		return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
@@ -2329,22 +2244,6 @@ public class Utils {
 		String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
 		return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
 	}
-
-	/*
-	 * public static String getHash(String value, String key) throws
-	 * UnsupportedEncodingException, NoSuchAlgorithmException,
-	 * InvalidKeyException { String type = "HmacSHA1"; SecretKeySpec secret =
-	 * new SecretKeySpec(key.getBytes(), type); Mac mac = Mac.getInstance(type);
-	 * mac.init(secret); byte[] bytes = mac.doFinal(value.getBytes()); return
-	 * bytesToHex(bytes); }
-	 * 
-	 * private final static char[] hexArray = "0123456789abcdef".toCharArray();
-	 * 
-	 * private static String bytesToHex(byte[] bytes) { char[] hexChars = new
-	 * char[bytes.length * 2]; int v; for (int j = 0; j < bytes.length; j++) { v
-	 * = bytes[j] & 0xFF; hexChars[j * 2] = hexArray[v >>> 4]; hexChars[j * 2 +
-	 * 1] = hexArray[v & 0x0F]; } return new String(hexChars); }
-	 */
 
 	/***
 	 * Creates the uri to a file located on external storage or application internal storage.
@@ -2544,7 +2443,6 @@ public class Utils {
 	 ****/
 	public static boolean isContentUri(Uri uri) {
 		if (!uri.toString().contains("content://")) {
-			Log.w(TAG, "#isContentUri The uri is not a media content uri");
 			return false;
 		} else {
 			return true;

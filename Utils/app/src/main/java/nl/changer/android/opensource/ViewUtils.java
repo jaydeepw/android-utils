@@ -31,7 +31,7 @@ public class ViewUtils {
 
 
 	/***
-	 * Show live character counter for the number of characters typed in the parameter {@link android.widget.EditText}
+	 * Shows live character counter for the number of characters typed in the parameter {@link android.widget.EditText}
 	 * 
 	 * @param editTextView Characters to count from
 	 * @param textCounterView {@link android.widget.TextView} to show live character count in
@@ -52,8 +52,7 @@ public class ViewUtils {
 		// initialize the TextView initial state
 		if(countdown) {
 			textCounterView.setText(String.valueOf(maxCharCount));	
-		}
-		else {
+		} else {
 			textCounterView.setText(String.valueOf("0 / " + maxCharCount));	
 		}
 		
@@ -115,8 +114,7 @@ public class ViewUtils {
             
             if( view == null ) {
             	throw new NullPointerException("View to which the tile has to be applied should not be null");	
-            }
-            else {
+            } else {
             	setBackground( view, bitmapDrawable);	
             }
 		} catch (Exception e) {
@@ -147,7 +145,7 @@ public class ViewUtils {
     public static void tileBackground( Context ctx, int layoutId, View viewToTileBg, int resIdOfTile ) {
     	
     	try {
-            //Tiling the background.
+            // Tiling the background.
         	Bitmap bmp = BitmapFactory.decodeResource(ctx.getResources(), resIdOfTile);
         	// deprecated constructor
             // BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
@@ -162,38 +160,5 @@ public class ViewUtils {
 		} catch (Exception e) {
 			Log.e(TAG, "#tileBackground Exception while tiling the background of the view");
 		}
-	}
-    
-    /****
-	 * Show a photo with a rounded corners.
-	 * @param cornerRadius Should NOT be too large, ideally the value should be 8 or 10. 
-	 * Pass -1 if you dont want the rounded corners.
-	 ****/
-	public static void showPhotoWithRoundedCorners( ImageView photo, String url, int cornerRadius ) {
-		/*DisplayImageOptions options = null;
-		
-		if( cornerRadius != -1 ) {
-			options = new DisplayImageOptions.Builder()
-						 .cacheInMemory( true )
-					     .cacheOnDisc( true )
-					     .displayer( new RoundedBitmapDisplayer(cornerRadius) ) // rounded corner bitmap
-					     .build();	
-		} else {
-			// no rounded corners
-			options = new DisplayImageOptions.Builder()
-						 .cacheInMemory( true )
-					     .cacheOnDisc( true )
-					     .build();
-		}
-		
-		if( !TextUtils.isEmpty( url ) && !url.equalsIgnoreCase("null") ) {
-			photo.setVisibility( View.VISIBLE );
-			ImageLoader.getInstance().displayImage( url, photo, options );
-		} else {
-			// hide the photos in a converted view so that 
-			// older photos are not visible 
-	    	// and user does not get a perception of wrong photos
-			// photo.setVisibility( View.INVISIBLE );
-		}*/
 	}
 }
