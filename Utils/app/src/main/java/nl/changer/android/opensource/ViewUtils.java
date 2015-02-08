@@ -15,150 +15,147 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
 /***
  * Provides utility methods and convenience methods for View controls.
- * 
+ *
  * <br/><br/>
  * @author Jay
  ****/
 public class ViewUtils {
 
-	private static final String TAG = ViewUtils.class.getSimpleName();
+    private static final String TAG = ViewUtils.class.getSimpleName();
 
+    /**
+     * Shows live character counter for the number of characters typed in the parameter {@link android.widget.EditText}
+     *
+     * @param editTextView Characters to count from
+     * @param textCounterView {@link android.widget.TextView} to show live character count in
+     * @param maxCharCount Max characters that can be typed in into the parameter edittext
+     * @param countdown if true, only the remaining of the max character count will be displayed. If false,
+     * current character count as well as max character count will be displayed in the UI.
+     ****/
+    public static void setLiveCharCounter(EditText editTextView, final TextView textCounterView, final int maxCharCount, final boolean countdown) {
 
-	/***
-	 * Shows live character counter for the number of characters typed in the parameter {@link android.widget.EditText}
-	 * 
-	 * @param editTextView Characters to count from
-	 * @param textCounterView {@link android.widget.TextView} to show live character count in
-	 * @param maxCharCount Max characters that can be typed in into the parameter edittext
-	 * @param countdown if true, only the remaining of the max character count will be displayed. If false, 
-	 * current character count as well as max character count will be displayed in the UI.
-	 ****/
-	public static void setLiveCharCounter(EditText editTextView, final TextView textCounterView, final int maxCharCount, final boolean countdown) {
-		
-		if(editTextView == null) {
-			throw new NullPointerException("View to count text characters on cannot be null");	
-		}
-		
-		if(textCounterView == null) {
-			throw new NullPointerException("View to display count cannot be null");	
-		}
-		
-		// initialize the TextView initial state
-		if(countdown) {
-			textCounterView.setText(String.valueOf(maxCharCount));	
-		} else {
-			textCounterView.setText(String.valueOf("0 / " + maxCharCount));	
-		}
-		
-		// initialize the edittext
-		setMaxLength(editTextView, maxCharCount);
-		
-		editTextView.addTextChangedListener(new TextWatcher() {
-	        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-	        	
-	        }
-	
-	        public void onTextChanged(CharSequence s, int start, int before, int count) {
-	        	
-	        	if(countdown) {
-	        		// show only the remaining number of characters
-	        		int charsLeft = maxCharCount - s.length();
-		        	
-		        	if( charsLeft >= 0 ) {
-		        		textCounterView.setText(String.valueOf(charsLeft));
-		        	}
-	        	} else {
-	        		// show number of chars / maxChars in the UI
-	        		textCounterView.setText(s.length() + " / " + maxCharCount);
-	        	}
-	        	
-	        }
-	
-	        public void afterTextChanged(Editable s) {
-	        	
-	        }
-		});
-	}
+        if(editTextView == null) {
+            throw new NullPointerException("View to count text characters on cannot be null");
+        }
 
-	/***
-	 * Set max text length for textview
-	 ****/
-	public static void setMaxLength(TextView textView, int maxLength) {
-		
-		if(textView == null) {
-			throw new NullPointerException("TextView cannot be null");
-		}
-		
-		InputFilter[] fArray = new InputFilter[1];
-		fArray[0] = new InputFilter.LengthFilter(maxLength);
-		textView.setFilters(fArray);
-	}
-	
-    /***
+        if(textCounterView == null) {
+            throw new NullPointerException("View to display count cannot be null");
+        }
+
+        // initialize the TextView initial state
+        if(countdown) {
+            textCounterView.setText(String.valueOf(maxCharCount));
+        } else {
+            textCounterView.setText(String.valueOf("0 / " + maxCharCount));
+        }
+
+        // initialize the edittext
+        setMaxLength(editTextView, maxCharCount);
+
+        editTextView.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(countdown) {
+                    // show only the remaining number of characters
+                    int charsLeft = maxCharCount - s.length();
+
+                    if( charsLeft >= 0 ) {
+                        textCounterView.setText(String.valueOf(charsLeft));
+                    }
+                } else {
+                    // show number of chars / maxChars in the UI
+                    textCounterView.setText(s.length() + " / " + maxCharCount);
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    /**
+     * Set max text length for textview
+     ****/
+    public static void setMaxLength(TextView textView, int maxLength) {
+
+        if(textView == null) {
+            throw new NullPointerException("TextView cannot be null");
+        }
+
+        InputFilter[] fArray = new InputFilter[1];
+        fArray[0] = new InputFilter.LengthFilter(maxLength);
+        textView.setFilters(fArray);
+    }
+
+    /**
      * Tiles the background of the for a view with viewId as a parameter.
      * ***/
-	public static void tileBackground( Context ctx, int viewId, int resIdOfTile ) {
-    	
-    	try {
-    		// Tiling the background.
-        	Bitmap bmp = BitmapFactory.decodeResource(ctx.getResources(), resIdOfTile);
-        	BitmapDrawable bitmapDrawable = new BitmapDrawable( ctx.getResources(), bmp);
+    public static void tileBackground( Context ctx, int viewId, int resIdOfTile ) {
+
+        try {
+            // Tiling the background.
+            Bitmap bmp = BitmapFactory.decodeResource(ctx.getResources(), resIdOfTile);
+            BitmapDrawable bitmapDrawable = new BitmapDrawable( ctx.getResources(), bmp);
             bitmapDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             View view = ((Activity) ctx).findViewById( viewId );
-            
+
             if( view == null ) {
-            	throw new NullPointerException("View to which the tile has to be applied should not be null");	
+                throw new NullPointerException("View to which the tile has to be applied should not be null");
             } else {
-            	setBackground( view, bitmapDrawable);	
+                setBackground( view, bitmapDrawable);
             }
-		} catch (Exception e) {
-			Log.w(TAG, "#tileBackground Exception while tiling the background of the view");
-		}
-	}
-	
-	/***
-	 * Sets the passed-in drawable parameter as a background to the 
-	 * passed in target parameter in an SDK independent way. This
-	 * is the recommended way of setting background rather
-	 * than using native background setters provided by {@link android.view.View}
-	 * class. This method should NOT be used for setting background of an {@link android.widget.ImageView}
-	 * 
-	 * @param target View to set background to.
-	 * @param drawable background image
-	 * ***/
-	@SuppressLint("NewApi")
-	public static void setBackground(View target, Drawable drawable) {
-		if( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-    		target.setBackgroundDrawable(drawable);
-    	} else {
-    		target.setBackground(drawable);
-    	}
-	}
-    
-	
+        } catch (Exception e) {
+            Log.w(TAG, "#tileBackground Exception while tiling the background of the view");
+        }
+    }
+
+    /**
+     * Sets the passed-in drawable parameter as a background to the
+     * passed in target parameter in an SDK independent way. This
+     * is the recommended way of setting background rather
+     * than using native background setters provided by {@link android.view.View}
+     * class. This method should NOT be used for setting background of an {@link android.widget.ImageView}
+     *
+     * @param target View to set background to.
+     * @param drawable background image
+     * ***/
+    @SuppressLint("NewApi")
+    public static void setBackground(View target, Drawable drawable) {
+        if( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            target.setBackgroundDrawable(drawable);
+        } else {
+            target.setBackground(drawable);
+        }
+    }
+
     public static void tileBackground( Context ctx, int layoutId, View viewToTileBg, int resIdOfTile ) {
-    	
-    	try {
+
+        try {
             // Tiling the background.
-        	Bitmap bmp = BitmapFactory.decodeResource(ctx.getResources(), resIdOfTile);
-        	// deprecated constructor
+            Bitmap bmp = BitmapFactory.decodeResource(ctx.getResources(), resIdOfTile);
+            // deprecated constructor
             // BitmapDrawable bitmapDrawable = new BitmapDrawable(bmp);
-        	BitmapDrawable bitmapDrawable = new BitmapDrawable( ctx.getResources(), bmp);
+            BitmapDrawable bitmapDrawable = new BitmapDrawable( ctx.getResources(), bmp);
             bitmapDrawable.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
             View view = viewToTileBg.findViewById(layoutId);
-            
+
             if( view != null ) {
-            	setBackground(view, bitmapDrawable);	
+                setBackground(view, bitmapDrawable);
             }
-            
-		} catch (Exception e) {
-			Log.e(TAG, "#tileBackground Exception while tiling the background of the view");
-		}
-	}
+
+        } catch (Exception e) {
+            Log.e(TAG, "#tileBackground Exception while tiling the background of the view");
+        }
+    }
 }
