@@ -10,6 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * @deprecated
+ */
 public class JSONUtils {
     public static Object toJSON(Object object) throws JSONException {
         if (object instanceof Map) {

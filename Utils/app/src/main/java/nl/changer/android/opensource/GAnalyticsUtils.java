@@ -7,7 +7,8 @@ import com.google.analytics.tracking.android.Fields;
 import com.google.analytics.tracking.android.MapBuilder;
 import com.google.analytics.tracking.android.Tracker;
 
-/***
+/**
+ * @deprecated
  * Helper utility class for older and deprecated version of Google Analytics.
  ***/
 public class GAnalyticsUtils {

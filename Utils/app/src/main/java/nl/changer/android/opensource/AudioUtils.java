@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ *
+ */
 public class AudioUtils {
 
 	private static final String TAG = AudioUtils.class.getSimpleName();
@@ -57,7 +60,7 @@ public class AudioUtils {
 		return saveAudio(ctx);
 	}
 
-	/****
+	/**
 	 * 
 	 * @deprecated
 	 * <br/>
