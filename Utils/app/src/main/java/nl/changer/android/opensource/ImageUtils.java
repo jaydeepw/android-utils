@@ -95,7 +95,7 @@ public class ImageUtils {
 		if (uri == null)
 			throw new NullPointerException(ERROR_URI_NULL);
 
-		if (!isMediaContentUri(uri))
+		if (!MediaUtils.isMediaContentUri(uri))
 			return null;
 
 		Bitmap original = Media.getBitmap(ctx.getContentResolver(), uri);
@@ -124,11 +124,11 @@ public class ImageUtils {
 			throw new NullPointerException(ERROR_URI_NULL);
 		}
 
-		if (!isMediaContentUri(uri)) {
+		if (!MediaUtils.isMediaContentUri(uri)) {
 			return invalidOrientation;
 		}
 
-		String filePath = Utils.getImagePathForUri(context, uri);
+		String filePath = Utils.getPathForMediaUri(context, uri);
 		ExifInterface exif = null;
 
 		try {
@@ -146,20 +146,6 @@ public class ImageUtils {
 	}
 
 	/***
-	 * @deprecated Use {@link MediaUtils#isMediaContentUri(android.net.Uri)} instead. <br/>
-	 *             Checks if the parameter {@link android.net.Uri} is a
-	 *             {@link android.provider.MediaStore.Audio.Media} content uri.
-	 ****/
-	public static boolean isMediaContentUri(Uri uri) {
-		if (!uri.toString().contains("content://media/")) {
-			Log.w(TAG, "#isContentUri The uri is not a media content uri");
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/***
 	 * Rotate the image at the specified uri. For the rotation of the image the
 	 * {@link android.media.ExifInterface} data in the image will be used.
 	 * 
@@ -172,7 +158,7 @@ public class ImageUtils {
 			throw new NullPointerException(ERROR_URI_NULL);
 		}
 
-		if (!isMediaContentUri(uri)) {
+		if (!MediaUtils.isMediaContentUri(uri)) {
 			return null;
 		}
 
