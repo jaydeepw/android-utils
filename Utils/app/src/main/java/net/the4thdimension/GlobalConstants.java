@@ -1,10 +1,9 @@
-/***
- * Collection of key names that can be used anywhere like 
+package net.the4thdimension;
+
+/**
+ * Collection of key names that can be used anywhere like
  * JSON parsing of JSON has those keys, native storage in key-values etc.
- * ***/
-
-package nl.changer;
-
+ **/
 public class GlobalConstants {
 	
 	/***Use API_OUTPUT_STATUS_CODE and API_OUTPUT_STATUS_LINE***/
@@ -25,11 +24,7 @@ public class GlobalConstants {
 	public static final String KEY_ACCESS_TOKEN = "access_token";
 	
 	public static final String KEY_AUTH_TOKEN = "auth_token";
-	
-	/****ANSWER
-	 * Heroku dis-allowed custom headers without X in them.
-	 * So we started sending both of them to the server.
-	 * */
+
 	public static final String KEY_X_ACCESS_TOKEN = "X-Access-Token";
 	
 	public static final String KEY_X_AUTH_TOKEN = "X-Auth-Token";

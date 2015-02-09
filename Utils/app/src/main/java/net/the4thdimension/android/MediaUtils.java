@@ -1,4 +1,4 @@
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -44,8 +44,6 @@ public class MediaUtils {
 	 * Checks if the parameter {@link android.net.Uri} is a Media content uri.
 	 ****/
 	public static boolean isMediaContentUri(Uri uri) {
-		
-		// TODO: move to MediaUtils.
 		if( !uri.toString().contains("content://media/") ) {
 			Log.w(TAG, "#isContentUri The uri is not a media content uri");
 			return false;

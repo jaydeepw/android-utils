@@ -1,5 +1,5 @@
 
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import android.content.ContentValues;
 import android.content.Context;

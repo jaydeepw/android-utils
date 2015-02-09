@@ -1,4 +1,4 @@
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import android.net.Uri;
 import android.text.TextUtils;

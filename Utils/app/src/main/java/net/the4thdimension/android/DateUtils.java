@@ -1,5 +1,5 @@
 
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import android.net.ParseException;
-import android.util.Log;
 
 /***
  * Provides helper methods for date utilities.

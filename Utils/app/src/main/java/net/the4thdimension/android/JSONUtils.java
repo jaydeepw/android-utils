@@ -1,4 +1,4 @@
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import java.util.ArrayList;
 import java.util.HashMap;

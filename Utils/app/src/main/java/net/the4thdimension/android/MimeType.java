@@ -1,4 +1,4 @@
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 public class MimeType {
 
@@ -19,5 +19,4 @@ public class MimeType {
 	public static String TEXT_XML = "text/xml";
 	
 	public static String IMAGE_JPEG = "image/jpeg";
-	
 }

@@ -1,5 +1,5 @@
 
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.provider.MediaStore.Images.Media;
 import android.util.Log;
 
-/***
+/**
  * Provides helper methods for image operations
  ***/
 public class ImageUtils {
@@ -23,13 +23,13 @@ public class ImageUtils {
 
 	private static final String ERROR_URI_NULL = "Uri cannot be null";
 
-	/***
+	/**
 	 * Scales the image depending upon the display density of the device. Maintains image aspect
 	 * ratio.
 	 * 
 	 * When dealing with the bitmaps of bigger size, this method must be called from a non-UI
 	 * thread.
-	 * ***/
+	 **/
 	public static Bitmap scaleDownBitmap(Context ctx, Bitmap source, int newHeight) {
 		final float densityMultiplier = Utils.getDensityMultiplier(ctx);
 
@@ -48,13 +48,13 @@ public class ImageUtils {
 		return photo;
 	}
 
-	/***
+	/**
 	 * Scales the image independently of the screen density of the device. Maintains image aspect
 	 * ratio.
 	 * 
 	 * When dealing with the bitmaps of bigger size, this method must be called from a non-UI
 	 * thread.
-	 * ***/
+	 **/
 	public static Bitmap scaleBitmap(Context ctx, Bitmap source, int newHeight) {
 
 		// Log.v( TAG, "#scaleDownBitmap Original w: " + source.getWidth() + " h: " +
@@ -71,25 +71,25 @@ public class ImageUtils {
 		return photo;
 	}
 
-	/***
+	/**
 	 * Scales the image independently of the screen density of the device. Maintains image aspect
 	 * ratio.
 	 * 
 	 * @param uri
 	 *            Uri of the source bitmap
-	 ****/
+	 **/
 	public static Bitmap scaleDownBitmap(Context ctx, Uri uri, int newHeight) throws FileNotFoundException, IOException {
 		Bitmap original = Media.getBitmap(ctx.getContentResolver(), uri);
 		return scaleBitmap(ctx, original, newHeight);
 	}
 
-	/***
+	/**
 	 * Scales the image independently of the screen density of the device. Maintains image aspect
 	 * ratio.
 	 * 
 	 * @param uri
 	 *            Uri of the source bitmap
-	 ****/
+	 **/
 	public static Uri scaleDownBitmapForUri(Context ctx, Uri uri, int newHeight) throws FileNotFoundException, IOException {
 
 		if (uri == null)
@@ -111,12 +111,12 @@ public class ImageUtils {
 		return destUri;
 	}
 
-	/***
+	/**
 	 * Gets the orientation of the image pointed to by the parameter uri
 	 * 
 	 * @return Image orientation value corresponding to <code>ExifInterface.ORIENTATION_*</code> <br/>
 	 *         Returns -1 if the row for the {@link android.net.Uri} is not found.
-	 ****/
+	 **/
 	public static int getOrientation(Context context, Uri uri) {
 
 		int invalidOrientation = -1;
@@ -145,13 +145,13 @@ public class ImageUtils {
 		return orientation;
 	}
 
-	/***
+	/**
 	 * Rotate the image at the specified uri. For the rotation of the image the
 	 * {@link android.media.ExifInterface} data in the image will be used.
 	 * 
 	 * @param uri
 	 *            Uri of the image to be rotated.
-	 ****/
+	 **/
 	public static Uri rotateImage(Context context, Uri uri) throws FileNotFoundException, IOException {
 		// rotate the image
 		if (uri == null) {

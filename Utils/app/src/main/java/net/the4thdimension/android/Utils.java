@@ -1,5 +1,5 @@
 
-package nl.changer.android.opensource;
+package net.the4thdimension.android;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -56,8 +56,8 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -66,6 +66,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -84,11 +85,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nl.changer.GlobalConstants;
-import nl.changer.KeyValueTuple;
 
-
-/***
+/**
  * Provides convenience methods and abstractions to some tasks in Android
  *
  * <br/>
@@ -102,18 +100,18 @@ public class Utils {
 
     static ProgressDialog mProgressDialog;
 
-    /***
+    /**
      * Shows a long time duration toast message.
      *
      * @param msg
      *            Message to be show in the toast.
      * @return Toast object just shown
-     * ***/
+     **/
     public static Toast showToast(Context ctx, CharSequence msg) {
         return showToast(ctx, msg, Toast.LENGTH_LONG);
     }
 
-    /***
+    /**
      * Shows the message passed in the parameter in the Toast.
      *
      * @param msg
@@ -121,7 +119,7 @@ public class Utils {
      * @param duration
      *            Duration in milliseconds for which the toast should be shown
      * @return Toast object just shown
-     * ***/
+     **/
     public static Toast showToast(Context ctx, CharSequence msg, int duration) {
         Toast toast = Toast.makeText(ctx, msg, Toast.LENGTH_SHORT);
         toast.setDuration(duration);
@@ -129,11 +127,11 @@ public class Utils {
         return toast;
     }
 
-    /***
+    /**
      * Checks if the Internet connection is available.
      *
      * @return Returns true if the Internet connection is available. False otherwise.
-     * **/
+     **/
     public static boolean isInternetAvailable(Context ctx) {
         ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -150,7 +148,7 @@ public class Utils {
 
     /**
      * Checks if the SD Card is mounted on the device.
-     * ***/
+     **/
     public static boolean isSdCardMounted() {
         String status = Environment.getExternalStorageState();
 
@@ -163,14 +161,14 @@ public class Utils {
     /**
      * Shows an alert dialog with the OK button. When the user presses OK button, the dialog
      * dismisses.
-     * ***/
+     **/
     public static void showAlertDialog(Context ctx, @StringRes String title, String body) {
         showAlertDialog(ctx, title, body, null);
     }
 
-    /***
+    /**
      * Shows an alert dialog with OK button
-     ***/
+     **/
     public static void showAlertDialog(Context ctx, String title, String body, DialogInterface.OnClickListener okListener) {
 
         if (okListener == null) {
@@ -197,7 +195,7 @@ public class Utils {
      * @return Base64 string value of a {@linkplain android.graphics.Bitmap} passed in as a parameter
      * @throws NullPointerException
      *             If the parameter bitmap is null.
-     * ***/
+     **/
     public static String toBase64(Bitmap bitmap) {
 
         if (bitmap == null) {
@@ -218,7 +216,7 @@ public class Utils {
      *
      * @throws NullPointerException
      *             If the parameter drawable is null.
-     * ***/
+     **/
     public static Bitmap drawableToBitmap(Drawable drawable) {
 
         if (drawable == null) {
@@ -246,7 +244,7 @@ public class Utils {
      *
      * @throws NullPointerException
      *             If the parameter bitmap is null.
-     * ***/
+     **/
     public static InputStream bitmapToInputStream(Bitmap bitmap) throws NullPointerException {
 
         if (bitmap == null) {
@@ -272,7 +270,7 @@ public class Utils {
      *            Body/Message to be shown in the progress dialog
      * @param isCancellable
      *            True if the dialog can be cancelled on back button press, false otherwise
-     ***/
+    **/
     public static void showProgressDialog(Context ctx, String title, String body, boolean isCancellable) {
         showProgressDialog(ctx, title, body, null, isCancellable);
     }
@@ -291,7 +289,7 @@ public class Utils {
      *            Icon to show in the progress dialog. It can be null.
      * @param isCancellable
      *            True if the dialog can be cancelled on back button press, false otherwise
-     ***/
+     **/
     public static void showProgressDialog(Context ctx, String title, String body, Drawable icon, boolean isCancellable) {
 
         if (ctx instanceof Activity) {
@@ -305,14 +303,14 @@ public class Utils {
 
     /**
      * Check if the {@link android.app.ProgressDialog} is visible in the UI.
-     ****/
+     **/
     public static boolean isProgressDialogVisible() {
         return (mProgressDialog != null);
     }
 
     /**
      * Dismiss the progress dialog if it is visible.
-     * **/
+     **/
     public static void dismissProgressDialog() {
 
         if (mProgressDialog != null) {
@@ -325,7 +323,7 @@ public class Utils {
     /**
      * Gives the device independent constant which can be used for scaling images, manipulating view
      * sizes and changing dimension and display pixels etc.
-     * ***/
+     **/
     public static float getDensityMultiplier(Context ctx) {
         return ctx.getResources().getDisplayMetrics().density;
     }
@@ -344,7 +342,7 @@ public class Utils {
         return (int) (px * scale + 0.5f);
     }
 
-    /***
+    /**
      * Creates a confirmation dialog with Yes-No Button. By default the buttons just dismiss the
      * dialog.
      *
@@ -354,12 +352,12 @@ public class Utils {
      * @param yesListener
      *            Yes click handler
      * @param noListener
-     * ***/
+     **/
     public static void showConfirmDialog(Context ctx, String message, DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener) {
         showConfirmDialog(ctx, message, yesListener, noListener, "Yes", "No");
     }
 
-    /***
+    /**
      * Creates a confirmation dialog with Yes-No Button. By default the buttons just dismiss the
      * dialog.
      *
@@ -373,7 +371,7 @@ public class Utils {
      *            Label for yes button
      * @param noLabel
      *            Label for no button
-     * ***/
+     **/
     public static void showConfirmDialog(Context ctx, String message, DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener, String yesLabel, String noLabel) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -400,7 +398,7 @@ public class Utils {
         builder.setMessage(message).setPositiveButton(yesLabel, yesListener).setNegativeButton(noLabel, noListener).show();
     }
 
-    /***
+    /**
      * Creates a confirmation dialog that show a pop-up with button labeled as parameters labels.
      *
      * @param ctx
@@ -411,12 +409,6 @@ public class Utils {
      *            For e.g.
      *
      *            <pre>
-     *
-     *
-     *
-     *
-     *
-     *
      *
      *
      * DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -439,7 +431,7 @@ public class Utils {
      *            For e.g. "Yes"
      * @param negativeBtnLabel
      *            For e.g. "No"
-     * ***/
+     **/
     public static void showDialog(Context ctx, String message, String positiveBtnLabel, String negativeBtnLabel, DialogInterface.OnClickListener dialogClickListener) {
 
         if (dialogClickListener == null) {
@@ -451,9 +443,9 @@ public class Utils {
         builder.setMessage(message).setPositiveButton(positiveBtnLabel, dialogClickListener).setNegativeButton(negativeBtnLabel, dialogClickListener).show();
     }
 
-    /***
+    /**
      * Gets the version name of the application. For e.g. 1.9.3
-     * ***/
+     **/
     public static String getApplicationVersionNumber(Context ctx) {
 
         String versionName = null;
@@ -467,9 +459,9 @@ public class Utils {
         return versionName;
     }
 
-    /***
+    /**
      * Gets the version code of the application. For e.g. Maverick Meerkat or 2013050301
-     * ***/
+     **/
     public static int getApplicationVersionCode(Context ctx) {
 
         int versionCode = 0;
@@ -483,29 +475,20 @@ public class Utils {
         return versionCode;
     }
 
-    /***
-     * @deprecated Use {@link #getOsVersion()} instead
-     *
-     *             Gets the version number of the Android OS For e.g. 2.3.4 or 4.1.2
-     ***/
-    public static String getOSVersion() {
-        return Build.VERSION.RELEASE;
-    }
-
-    /***
+    /**
      * Gets the version number of the Android OS For e.g. 2.3.4 or 4.1.2
-     ***/
+     **/
     public static String getOsVersion() {
         return Build.VERSION.RELEASE;
     }
 
-    /***
+    /**
      * Checks if the service with the given name is currently running on the device.
      *
      * @param serviceName
      *            Fully qualified name of the server. <br/>
      *            For e.g. nl.changer.myservice.name
-     ***/
+     **/
     public static boolean isServiceRunning(Context ctx, String serviceName) {
 
         if (serviceName == null)
@@ -524,10 +507,10 @@ public class Utils {
     /**
      * Gets the device unique id called IMEI. Sometimes, this returns 00000000000000000 for the
      * rooted devices.
-     * ***/
+     **/
     public static String getDeviceImei(Context ctx) {
-        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
-        return tm.getDeviceId();
+        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
     }
 
     /**
@@ -539,7 +522,7 @@ public class Utils {
      *            Message that shows up as a subject while sharing through email.
      * @param title
      *            Title of the sharing options prompt. For e.g. "Share via" or "Share using"
-     * ***/
+     **/
     public static void share(Context ctx, String sharingMsg, String emailSubject, String title) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 
@@ -550,13 +533,13 @@ public class Utils {
         ctx.startActivity(Intent.createChooser(sharingIntent, title));
     }
 
-    /***
+    /**
      * Checks the type of data connection that is currently available on the device.
      *
      * @return <code>ConnectivityManager.TYPE_*</code> as a type of internet connection on the
      *         device. Returns -1 in case of error or none of
      *         <code>ConnectivityManager.TYPE_*</code> is found.
-     * ***/
+     **/
     public static int getDataConnectionType(Context ctx) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -572,9 +555,9 @@ public class Utils {
             return -1;
     }
 
-    /***
+    /**
      * Checks if the input parameter is a valid email.
-     * ***/
+     **/
     public static boolean isValidEmail(String email) {
         final String emailPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         Matcher matcher;
@@ -588,9 +571,9 @@ public class Utils {
             return false;
     }
 
-    /***
+    /**
      * Capitalizes each word in the string.
-     * ***/
+     **/
     public static String capitalizeString(String string) {
 
         if (string == null) {
@@ -618,7 +601,7 @@ public class Utils {
 
     /**
      * Checks if the DB with the given name is present on the device.
-     * ***/
+     **/
     public static boolean isDatabasePresent(String packageName, String dbName) {
         SQLiteDatabase checkDB = null;
         try {
@@ -691,9 +674,9 @@ public class Utils {
         return stringArray;
     }
 
-    /***
+    /**
      * Convert a given list of {@link String} into a {@link org.json.JSONArray}
-     ****/
+     **/
     public static JSONArray toJSONArray(ArrayList<String> stringArr) {
         JSONArray jsonArr = new JSONArray();
 
@@ -705,7 +688,7 @@ public class Utils {
         return jsonArr;
     }
 
-    /***
+    /**
      * Gets the data storage directory(pictures dir) for the device. If the external storage is not
      * available, this returns the reserved application data storage directory. SD Card storage will
      * be preferred over internal storage.
@@ -716,7 +699,7 @@ public class Utils {
      *            directory.
      * @return Data storage directory on the device. Maybe be a directory on SD Card or internal
      *         storage of the device.
-     ****/
+     **/
     public static File getStorageDirectory(Context ctx, String dirName) {
 
         if (TextUtils.isEmpty(dirName)) {
@@ -743,22 +726,22 @@ public class Utils {
         return f;
     }
 
-    /***
+    /**
      * Given a file name, this method creates a {@link java.io.File} on best chosen device storage and
      * returns the file object. You can get the file path using {@link java.io.File#getAbsolutePath()}
-     * ***/
+     **/
     public static File getFile(Context ctx, String fileName) {
         File dir = getStorageDirectory(ctx, null);
         File f = new File(dir, fileName);
         return f;
     }
 
-    /***
+    /**
      * Writes the given image to the external storage of the device. If external storage is not
      * available, the image is written to the application private directory
      *
      * @return Path of the image file that has been written.
-     ****/
+     **/
     public static String writeImage(Context ctx, byte[] imageData) {
 
         // TODO: move to MediaUtils
@@ -792,12 +775,12 @@ public class Utils {
         return filePath;
     }
 
-    /****
+    /**
      * Inserts an image into {@link android.provider.MediaStore.Images.Media} content provider of the device.
      *
      * @return The media content Uri to the newly created image, or null if the image failed to be
      *         stored for any reason.
-     * ***/
+     **/
     public static String writeImageToMedia(Context ctx, Bitmap image, String title, String description) {
         // TODO: move to MediaUtils
         if (ctx == null) {
@@ -807,11 +790,11 @@ public class Utils {
         return Media.insertImage(ctx.getContentResolver(), image, title, description);
     }
 
-    /***
+    /**
      * Gets the name of the application that has been defined in AndroidManifest.xml
      *
      * @throws android.content.pm.PackageManager.NameNotFoundException
-     ****/
+     **/
     public static String getApplicationName(Context ctx) throws NameNotFoundException {
 
         if (ctx == null) {
@@ -834,7 +817,7 @@ public class Utils {
 
     /**
      * Returns the URL without the query string
-     ****/
+     **/
     public static URL getPathFromUrl(URL url) {
 
         if (url != null) {
@@ -852,7 +835,7 @@ public class Utils {
 
     /**
      * Transforms Calendar to ISO 8601 string.
-     ****/
+     **/
     public static String fromCalendar(final Calendar calendar) {
         // TODO: move this method to DateUtils
         Date date = calendar.getTime();
@@ -862,7 +845,7 @@ public class Utils {
 
     /**
      * Gets current date and time formatted as ISO 8601 string.
-     ****/
+     **/
     public static String now() {
         // TODO: move this method to DateUtils
         return fromCalendar(GregorianCalendar.getInstance());
@@ -870,7 +853,7 @@ public class Utils {
 
     /**
      * Transforms ISO 8601 string to Calendar.
-     ****/
+     **/
     public static Calendar toCalendar(final String iso8601string) throws ParseException {
         // TODO: move this method to DateUtils
         Calendar calendar = GregorianCalendar.getInstance();
@@ -896,7 +879,7 @@ public class Utils {
      *
      * @param time
      *            ISO formatted time when the event occurred in local time zone.
-     * ***/
+     **/
     public static String getElapsedTime(String time) {
         TimeZone defaultTimeZone = TimeZone.getDefault();
 
@@ -948,7 +931,7 @@ public class Utils {
      * Set Mock Location for test device. DDMS cannot be used to mock location on an actual device.
      * So this method should be used which forces the GPS Provider to mock the location on an actual
      * device.
-     ****/
+     **/
     public static void setMockLocation(Context ctx, double longitude, double latitude) {
         LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
 
@@ -1001,7 +984,7 @@ public class Utils {
      * @param date
      *            ISO format date
      * @return The name of the day of the week
-     * ***/
+     **/
     public static String getDayOfWeek(String date) {
         // TODO: move to DateUtils
         Date dateDT = DateUtils.parseDate(date);
@@ -1056,7 +1039,7 @@ public class Utils {
 
     /**
      * Gets random color integer
-     ****/
+     **/
     public static int getRandomColor() {
         Random random = new Random();
         int red = random.nextInt(255);
@@ -1066,16 +1049,16 @@ public class Utils {
         return Color.argb(255, red, green, blue);
     }
 
-    /****
+    /**
      * Converts a given bitmap to byte array
-     * ***/
+     **/
     public static byte[] toBytes(Bitmap bmp) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
     }
 
-    /***
+    /**
      * Resizes an image to the given width and height parameters Prefer using
      *
      * @param sourceBitmap
@@ -1084,7 +1067,7 @@ public class Utils {
      *            Width of resized bitmap
      * @param newHeight
      *            Height of the resized bitmap
-     ****/
+     **/
     public static Bitmap resizeImage(Bitmap sourceBitmap, int newWidth, int newHeight, boolean filter) {
         // TODO: move this method to ImageUtils
         if (sourceBitmap == null) {
@@ -1105,14 +1088,14 @@ public class Utils {
         return resized;
     }
 
-    /****
+    /**
      *
      * <br/>
      * <br/>
      *
      * @param compressionFactor
      *            Powers of 2 are often faster/easier for the decoder to honor
-     * **/
+     **/
     public static Bitmap compressImage(Bitmap sourceBitmap, int compressionFactor) {
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inPreferredConfig = Config.ARGB_8888;
@@ -1154,10 +1137,10 @@ public class Utils {
         return inSampleSize;
     }
 
-    /***
+    /**
      * Provide the height to which the sourceImage is to be resized. This method will calculate the
-     * resultant height. Use scaleDownBitmap from {@link nl.changer.android.opensource.Utils} wherever possible
-     ***/
+     * resultant height. Use scaleDownBitmap from {@link Utils} wherever possible
+     **/
     public Bitmap resizeImageByHeight(int height, Bitmap sourceImage) {
         // TODO: move this method to ImageUtils
         int widthO = 0; // original width
@@ -1176,9 +1159,9 @@ public class Utils {
         return Bitmap.createScaledBitmap(sourceImage, widthNew, heightNew, true);
     }
 
-    /***
+    /**
      * Checks if the url is valid
-     ****/
+     **/
     public static boolean isValidURL(String url) {
 
         URL u = null;
@@ -1198,11 +1181,11 @@ public class Utils {
         return true;
     }
 
-    /***
+    /**
      * Get the type of the media. Audio, Video or Image.
      *
      * @return Lower case string for one of above listed media type
-     * ***/
+     **/
     public static String getMediaType(String contentType) {
         // TODO: move to MediaUtils
         if (isMedia(contentType)) {
@@ -1219,7 +1202,7 @@ public class Utils {
         }
     }
 
-    /****
+    /**
      * Identifies if the content represented by the parameter mimeType is media. Image, Audio and
      * Video is treated as media by this method. You can refer to standard MIME type here. <a
      * href="http://www.iana.org/assignments/media-types/media-types.xhtml" >Standard MIME
@@ -1227,7 +1210,7 @@ public class Utils {
      *
      * @param mimeType
      *            standard MIME type of the data.
-     ****/
+     **/
     public static boolean isMedia(String mimeType) {
         // TODO: move to MediaUtils
         boolean isMedia = false;
@@ -1243,11 +1226,11 @@ public class Utils {
         return isMedia;
     }
 
-    /***
+    /**
      * Gets the Uri without the fragment. For e.g if the uri is
      * content://com.android.storage/data/images/48829#is_png the part after '#' is called as
      * fragment. This method strips the fragment and returns the url.
-     * ***/
+     **/
     public static String removeUriFragment(String url) {
 
         if (url == null || url.length() == 0) {
@@ -1263,9 +1246,9 @@ public class Utils {
         }
     }
 
-    /****
+    /**
      * Removes the parameters from the query from the uri
-     ****/
+     **/
     public static String removeQueryParameters(Uri uri) {
         assert (uri.getAuthority() != null);
         assert (uri.getPath() != null);
@@ -1276,9 +1259,9 @@ public class Utils {
         return builder.build().toString();
     }
 
-    /***
+    /**
      * Returns true if the mime type is a standard image mime type
-     ****/
+     **/
     public static boolean isImage(String mimeType) {
         // TODO: move to MediaUtils
         // TODO: apply regex patter for checking the MIME type
@@ -1291,9 +1274,9 @@ public class Utils {
             return false;
     }
 
-    /***
+    /**
      * Returns true if the mime type is a standard audio mime type
-     ****/
+     **/
     public static boolean isAudio(String mimeType) {
         // TODO: move to MediaUtils
         // TODO: apply regex patter for checking the MIME type
@@ -1306,9 +1289,9 @@ public class Utils {
             return false;
     }
 
-    /***
+    /**
      * Returns true if the mime type is a standard video mime type
-     ****/
+     **/
     public static boolean isVideo(String mimeType) {
         // TODO: move to MediaUtils
         // TODO: apply regex patter for checking the MIME type
@@ -1352,7 +1335,7 @@ public class Utils {
                     try {
                         File f = new File(path);
                         FileInputStream fis = new FileInputStream(f);
-                        data = NetworkManager.readStreamToBytes(fis);
+                        data = readStreamToBytes(fis);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
@@ -1372,7 +1355,58 @@ public class Utils {
         return data;
     }
 
-    /***
+    /**
+     * Convert {@linkplain java.io.InputStream} to byte array.
+     *
+     * @throws NullPointerException If input parameter {@link java.io.InputStream} is null
+     **/
+    public static byte[] readStreamToBytes(InputStream inputStream) {
+
+        if( inputStream == null )
+            throw new NullPointerException("InputStream is null");
+
+        byte[] bytesData = null;
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader( new InputStreamReader(inputStream) );
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            int nRead;
+            byte[] data = new byte[16384];
+
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+
+            buffer.flush();
+
+            bytesData = buffer.toByteArray();
+
+            // Log.d( TAG, "#readStream data: " + data );
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        } finally {
+
+            if( reader != null ) {
+                try {
+                    reader.close();
+
+                    if( inputStream != null )
+                        inputStream.close();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                } catch ( Exception e ) {
+                    e.printStackTrace();
+                }
+            }
+        }	// finally
+
+        return bytesData;
+    }
+
+    /**
      * Gets the size of the media resource pointed to by the paramter mediaUri.
      *
      * Known bug: for unknown reason, the image size for some images was found to be 0
@@ -1382,7 +1416,7 @@ public class Utils {
      *            content://media/external/video/media/45490
      *
      * @return Size in bytes
-     ****/
+     **/
     public static long getMediaSize(Context ctx, Uri mediaUri) {
         // TODO: move to MediaUtils
         Cursor cur = ctx.getContentResolver().query(mediaUri, new String[]{Media.SIZE}, null, null, null);
@@ -1415,9 +1449,9 @@ public class Utils {
         return size;
     }
 
-    /****
+    /**
      * Gets media file name.
-     ****/
+     **/
     public static String getMediaFileName(Context ctx, Uri mediaUri) {
         // TODO: move to MediaUtils
         String colName = MediaColumns.DISPLAY_NAME;
@@ -1452,7 +1486,7 @@ public class Utils {
         return dispName;
     }
 
-    /***
+    /**
      * Gets media type from the Uri.
      **/
     public static String getMediaType(Context ctx, Uri uri) {
@@ -1474,60 +1508,12 @@ public class Utils {
         }
     }
 
-    /****
-     * Converts to list of {@link KeyValueTuple}
-     *
-     * @throws NullPointerException
-     *             if parameter is null
-     ****/
-    public static ArrayList<KeyValueTuple> toKeyValueList(JSONArray keyValueArray) {
-        // TODO: remove KeyValueTyple and use
-        // http://developer.android.com/reference/android/util/Pair.html
-        ArrayList<KeyValueTuple> list = null;
-
-        if (keyValueArray == null) {
-            throw new NullPointerException("key-values array cannot be null");
-        }
-
-        if (keyValueArray.length() > 0) {
-            list = new ArrayList<KeyValueTuple>();
-        }
-
-        for (int i = 0; i < keyValueArray.length(); i++) {
-            JSONObject obj = null;
-            String key = null;
-            String value = null;
-
-            try {
-                obj = keyValueArray.getJSONObject(i);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (obj == null) {
-                continue;
-            }
-
-            try {
-                key = obj.getString(GlobalConstants.KEY_KEY);
-                value = obj.getString(GlobalConstants.KEY_VALUE);
-                list.add(new KeyValueTuple(key, value));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return list;
-    }
-
-    /****
+    /**
      * Returns {@link android.text.SpannableString} in Bold typeface
      *
      * @param sourceText
      *            String to be converted to bold.
-     * ***/
+     **/
     public static SpannableStringBuilder toBold(String sourceText) {
 
         if (sourceText == null) {
@@ -1547,7 +1533,7 @@ public class Utils {
     /**
      * Formats given size in bytes to KB, MB, GB or whatever. This will work up to 1000 TB
      *
-     * **/
+     **/
     public static String formatSize(long size) {
 
         if (size <= 0) return "0";
@@ -1557,14 +1543,14 @@ public class Utils {
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
-    /***
+    /**
      * Formats given size in bytes to KB, MB, GB or whatever. Preferably use this method for
      * performance efficiency.
      *
      * @param si
      *            Controls byte value precision. If true, formatting is done using approx. 1000 Uses
      *            1024 if false.
-     * ***/
+     **/
     public static String formatSize(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
         if (bytes < unit)
@@ -1574,9 +1560,9 @@ public class Utils {
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
-    /***
+    /**
      * Creates the uri to a file located on external storage or application internal storage.
-     ****/
+     **/
     public static Uri createUri(Context ctx) {
         File root = getStorageDirectory(ctx, null);
         root.mkdirs();
@@ -1586,10 +1572,10 @@ public class Utils {
         return uri;
     }
 
-    /***
+    /**
      * Creates an intent to take a video from camera or gallery or any other application that can
      * handle the intent.
-     ****/
+     **/
     public static Intent createTakeVideoIntent(Activity ctx, Uri savingUri, int durationInSeconds) {
         // TODO: move to MediaUtils
 
@@ -1625,7 +1611,7 @@ public class Utils {
         return chooserIntent;
     }
 
-    /***
+    /**
      * Creates a ACTION_IMAGE_CAPTURE photo & ACTION_GET_CONTENT intent. This intent will be
      * aggregation of intents required to take picture from Gallery and Camera at the minimum. The
      * intent will also be directed towards the apps that are capable of sourcing the image data.
@@ -1634,7 +1620,7 @@ public class Utils {
      * @param savingUri
      *            Uri to store a high resolution image at. If the user takes the picture using the
      *            camera the image will be stored at this uri.
-     ****/
+     **/
     public static Intent createTakePictureIntent(Activity ctx, Uri savingUri) {
         // TODO: move to MediaUtils
 
@@ -1669,10 +1655,10 @@ public class Utils {
         return chooserIntent;
     }
 
-    /****
+    /**
      * Creates external content:// scheme uri to save the images at. The image saved at this
      * {@link android.net.Uri} will be visible via the gallery application on the device.
-     * ***/
+     **/
     public static Uri createImageUri(Context ctx) throws IOException {
         // TODO: move to MediaUtils
 
@@ -1690,9 +1676,9 @@ public class Utils {
         return imageUri;
     }
 
-    /****
+    /**
      * Creates external content:// scheme uri to save the videos at.
-     * ***/
+     **/
     public static Uri createVideoUri(Context ctx) throws IOException {
         // TODO: move to MediaUtils
 
@@ -1710,7 +1696,7 @@ public class Utils {
         return imageUri;
     }
 
-    /***
+    /**
      * Get the correctly appended name from the given name parameters
      *
      * @param firstName
@@ -1719,7 +1705,7 @@ public class Utils {
      *            Last name
      *
      * @return Returns correctly formatted full name. Returns null if both the values are null.
-     * ***/
+     **/
     public static String getName(String firstName, String lastName) {
         if (!TextUtils.isEmpty(firstName) && !TextUtils.isEmpty(lastName)) {
             return firstName + " " + lastName;
@@ -1767,9 +1753,9 @@ public class Utils {
         return uri.getScheme() == null;
     }
 
-    /***
+    /**
      * Checks if the parameter {@link android.net.Uri} is a content uri.
-     ****/
+     **/
     public static boolean isContentUri(Uri uri) {
         if (!uri.toString().contains("content://")) {
             return false;
