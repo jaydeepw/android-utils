@@ -11,8 +11,7 @@ Library Project for utility classes that can make me(and others) more productive
 * DateUtils - Set of utilities to handle date manipulation.
 * AudioUtils - Set of utilities to handle audio recodring, playing and saving to disk.
 * Utils - Set of general purpose utility methods.
-* StorageManager - Android SharedPreferences abstraction.
-* AWSUploader - Utility methods to upload objects to Amazon S3.
+* StorageManager - Android SharedPreferences abstraction
 * YouTubeUtils - Set of utilities to handle YouTube related stuff.
 * ViewUtils - Set of utilities to handle Android Views' related stuff.
 
