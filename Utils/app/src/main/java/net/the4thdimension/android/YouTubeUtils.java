@@ -30,12 +30,12 @@ public class YouTubeUtils {
         return "http://youtube.com/watch?v=" + videoId;
     }
 
-    /***
+    /**
      * Creates thubmnail url for a given video ID.
      *
      * @param videoId
      * @param quality
-     ****/
+     **/
     public static String createThumbnailUrl(String videoId, String quality) {
 
         if(quality == null) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-/****
+/**
  * Provides convenience methods and abstraction for storing data in the
  * {@link android.content.SharedPreferences}
  * 
@@ -12,10 +12,8 @@ import android.content.SharedPreferences.Editor;
  * <br/>
  * 
  * @author Jay
- ****/
-public class StorageManager {
-
-	private static final String TAG = StorageManager.class.getSimpleName();
+ **/
+public class SharedPreferenceManager {
 
 	protected Context mContext;
 
@@ -23,7 +21,7 @@ public class StorageManager {
 	protected SharedPreferences mSettings;
 	protected Editor mEditor;
 
-	public StorageManager(Context ctx, String prefFileName) {
+	public SharedPreferenceManager(Context ctx, String prefFileName) {
 		mContext = ctx;
 
 		mSettings = mContext.getSharedPreferences(prefFileName,

@@ -1291,7 +1291,7 @@ public class Utils {
 
     /**
      * Returns true if the mime type is a standard video mime type
-     **/
+     */
     public static boolean isVideo(String mimeType) {
         // TODO: move to MediaUtils
         // TODO: apply regex patter for checking the MIME type
@@ -1300,8 +1300,9 @@ public class Utils {
                 return true;
             else
                 return false;
-        } else
+        } else {
             return false;
+        }
     }
 
     /**

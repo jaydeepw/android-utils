@@ -18,12 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-/***
+/**
  * Provides utility methods and convenience methods for View controls.
  *
  * <br/><br/>
  * @author Jay
- ****/
+ **/
 public class ViewUtils {
 
     private static final String TAG = ViewUtils.class.getSimpleName();

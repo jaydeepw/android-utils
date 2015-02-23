@@ -6,19 +6,14 @@ Library Project for utility classes that can make me(and others) more productive
 
 **Utility classes included**
 
-* MediaUtils - Set of utilities to handle media resize, scaling, rotation and other relevant stuff.
-* ImageUtils - Set of utilities to handle image manipulation.
-* DateUtils - Set of utilities to handle date manipulation.
-* AudioUtils - Set of utilities to handle audio recodring, playing and saving to disk.
 * Utils - Set of general purpose utility methods.
+* MediaUtils - Set of utilities to handle media resize, scaling, rotation and other relevant stuff.
+* ViewUtils - Set of utilities to handle Android Views' related stuff.
+* ImageUtils - Set of utilities to handle image manipulation.
+* AudioUtils - Set of utilities to handle audio recodring, playing and saving to disk.
+* DateUtils - Set of utilities to handle date manipulation.
 * StorageManager - Android SharedPreferences abstraction
 * YouTubeUtils - Set of utilities to handle YouTube related stuff.
-* ViewUtils - Set of utilities to handle Android Views' related stuff.
-
-Caution!
-==========
-Eclipse library project structure has been dropped. If you wish to use this library in your eclipse IDE, please checkout [eclipse-develop][1].
-No further development will be done or merged into [eclipse-develop][1] branch.
 
 ----
 
@@ -26,7 +21,7 @@ Download
 --------
 Gradle:
 ```groovy
-compile 'net.the4thdimension:android-utils:2.0.3'
+compile 'net.the4thdimension:android-utils:3.0.0'
 ```
 AndroidUtils requires Android 4.0+.
 
@@ -34,7 +29,7 @@ AndroidUtils requires Android 4.0+.
 The MIT License
 =============
 
-**Copyright (c) 2014 Jaydeep from [Changer Technologies Pvt. Ltd.](https://github.com/changer "Title")**
+**Copyright (c) 2013 Jaydeep**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +48,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-
-[1]: https://github.com/changer/android-utils/tree/eclipse-develop
