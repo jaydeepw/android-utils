@@ -106,7 +106,6 @@ public class Utils {
     private static final String TAG = Utils.class.getSimpleName();
 
     static ProgressDialog mProgressDialog;
-    private static Context ctx;
 
     /**
      * Shows a long time duration toast message.
