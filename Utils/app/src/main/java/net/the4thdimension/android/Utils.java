@@ -1906,6 +1906,7 @@ public class Utils {
 
     @Nullable
     /**
+     * Generates SHA-512 hash for given binary data.
      * @param stringToHash
      * @return
      */
