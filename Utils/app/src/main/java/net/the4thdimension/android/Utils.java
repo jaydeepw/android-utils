@@ -52,6 +52,7 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -587,11 +588,8 @@ public class Utils {
                 chars[i] = Character.toUpperCase(chars[i]);
                 found = true;
             } else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // You
-                // can
-                // add
-                // other
-                // chars
-                // here
+                // can add other
+                // chars here
                 found = false;
             }
         } // end for
@@ -1762,6 +1760,15 @@ public class Utils {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public static void hideKeyboard(Context context) {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            Log.e(TAG, "Sigh, cant even hide keyboard " + e.getMessage());
         }
     }
 }
