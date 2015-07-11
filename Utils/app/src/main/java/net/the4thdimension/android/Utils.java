@@ -106,6 +106,7 @@ public class Utils {
     private static final String TAG = Utils.class.getSimpleName();
 
     static ProgressDialog mProgressDialog;
+    private static Context ctx;
 
     /**
      * Shows a long time duration toast message.
@@ -1310,8 +1311,10 @@ public class Utils {
     }
 
     /**
-     * Get the media data from the one of the following media {@link android.content.ContentProvider} This method
-     * should not be called from the main thread of the application.
+     *
+     * Gets the media data from the one of the following media {@link android.content.ContentProvider} This method
+     * should not be called from the main thread of the application. Calling this method may have
+     * performance issues as this may allocate a huge memory array.
      * <ul>
      * <li>{@link android.provider.MediaStore.Images.Media}</li>
      * <li>{@link android.provider.MediaStore.Audio.Media}</li>
@@ -1567,7 +1570,6 @@ public class Utils {
 
     /**
      * Formats given size in bytes to KB, MB, GB or whatever. This will work up to 1000 TB
-     *
      **/
     public static String formatSize(long size) {
 
@@ -1588,8 +1590,11 @@ public class Utils {
      **/
     public static String formatSize(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
-        if (bytes < unit)
+
+        if (bytes < unit) {
             return bytes + " B";
+        }
+
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
@@ -1690,6 +1695,7 @@ public class Utils {
         return chooserIntent;
     }
 
+    @Nullable
     /**
      * Creates external content:// scheme uri to save the images at. The image saved at this
      * {@link android.net.Uri} will be visible via the gallery application on the device.
@@ -1711,6 +1717,7 @@ public class Utils {
         return imageUri;
     }
 
+    @Nullable
     /**
      * Creates external content:// scheme uri to save the videos at.
      **/
@@ -1731,7 +1738,10 @@ public class Utils {
         return imageUri;
     }
 
+    @Nullable
     /**
+     *
+     * @deprecated Use {#setTextValues} or {#getNullEmptyCheckedValue}
      * Get the correctly appended name from the given name parameters
      *
      * @param firstName
@@ -1799,6 +1809,10 @@ public class Utils {
         }
     }
 
+    /**
+     * Hides the already popped up keyboard from the screen.
+     * @param context
+     */
     public static void hideKeyboard(Context context) {
         try {
             InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
