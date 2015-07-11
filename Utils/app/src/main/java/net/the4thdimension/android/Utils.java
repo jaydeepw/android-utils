@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -44,6 +45,8 @@ import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.MediaColumns;
 import android.provider.MediaStore.Video;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -53,6 +56,7 @@ import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -1508,6 +1512,7 @@ public class Utils {
     }
 
     /**
+     * @deprecated Use {@link #toBold(String, String)}
      * Returns {@link android.text.SpannableString} in Bold typeface
      *
      * @param sourceText
@@ -1527,6 +1532,35 @@ public class Utils {
         // set text bold
         sb.setSpan(bss, 0, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return sb;
+    }
+
+    /**
+     * Typefaces the string as bold.
+     * If sub-string is null, entire string will be typefaced as bold and returned.
+     *
+     * @param string
+     * @param subString The subString within the string to bold. Pass null to bold entire string.
+     *                  @return {@link android.text.SpannableString}
+     */
+    public static SpannableStringBuilder toBold(String string, String subString) {
+        if (TextUtils.isEmpty(string)) {
+            return new SpannableStringBuilder("");
+        }
+
+        SpannableStringBuilder spannableBuilder = new SpannableStringBuilder(string);
+
+        StyleSpan bss = new StyleSpan(Typeface.BOLD);
+        if (subString != null) {
+            int substringNameStart = string.toLowerCase().indexOf(subString);
+            if (substringNameStart > -1) {
+                spannableBuilder.setSpan(bss, substringNameStart, substringNameStart + subString.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        } else {
+            // set entire text to bold
+            spannableBuilder.setSpan(bss, 0, spannableBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+        return spannableBuilder;
     }
 
     /**
@@ -1782,5 +1816,59 @@ public class Utils {
     public static boolean isBuildBelow(int buildVersion) {
         if (Build.VERSION.SDK_INT < buildVersion) return true;
         else return false;
+    }
+
+    /**
+     * Sets the two parameter values to the parameter {@link android.widget.TextView}
+     * in null-safe and empty-safe way. Such method can be used when setting firstname-lastname
+     * to a textview in the UI.
+     *
+     * @param textView
+     * @param firstValue String "null" will be treated as null value.
+     * @param secondValue String "null" will be treated as null value.
+     */
+    public static void setTextValues(@NonNull TextView textView, @Nullable String firstValue, @Nullable String secondValue) {
+        String nullEmptyCheckedVal = getNullEmptyCheckedValue(firstValue, secondValue, null);
+        textView.setText(nullEmptyCheckedVal);
+    }
+
+    @Nullable
+    /**
+     * Returns concatenated values of atleast to or more strings provided to it
+     * in a null safe manner.
+     * @param firstValue
+     * @param secondValue
+     * @param delimiter Delimiter to be used to concatnate the parameter strings. If null, space characer will be used.
+     * @param moreValues Optional
+     * @return
+     */
+    public static String getNullEmptyCheckedValue(@Nullable String firstValue, @Nullable String secondValue,
+                                                  @Nullable String delimiter, String... moreValues) {
+        if (TextUtils.isEmpty(delimiter)) {
+            delimiter = " ";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(firstValue) && !firstValue.equalsIgnoreCase("null")
+                && secondValue != null && !secondValue.equalsIgnoreCase("null")) {
+            builder.append(firstValue);
+            builder.append(delimiter);
+            builder.append(secondValue);
+        } else if (!TextUtils.isEmpty(firstValue) && !firstValue.equalsIgnoreCase("null")) {
+            builder.append(firstValue);
+        } else if (!TextUtils.isEmpty(secondValue) && !secondValue.equalsIgnoreCase("null")) {
+            builder.append(secondValue);
+        }
+
+        if (moreValues != null) {
+            for (String value : moreValues) {
+                if (!TextUtils.isEmpty(value) && !value.equalsIgnoreCase("null")) {
+                    builder.append(delimiter);
+                    builder.append(value);
+                }
+            }
+        }
+
+        return builder.toString();
     }
 }
