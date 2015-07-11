@@ -78,6 +78,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1639,7 +1641,7 @@ public class Utils {
         final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
 
         // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[] {}));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
 
         return chooserIntent;
     }
@@ -1871,4 +1873,73 @@ public class Utils {
 
         return builder.toString();
     }
+
+    @Nullable
+    /**
+     * Partially capitalizes the string from paramter start and offset.
+     *
+     * @param string String to be formatted
+     * @param start  Starting position of the substring to be capitalized
+     * @param offset Offset of characters to be capitalized
+     * @return
+     */
+    public static String capitalizeString(String string, int start, int offset) {
+        if (TextUtils.isEmpty(string)) {
+            return null;
+        }
+        String formattedString = string.substring(start, offset).toUpperCase() + string.substring(offset, string.length());
+        return formattedString;
+    }
+
+    @Nullable
+    /**
+     * @param stringToHash
+     * @return
+     */
+    public static String getSha512Hash(String stringToHash) {
+        if (stringToHash == null) {
+            return null;
+        } else {
+            return getSha512Hash(stringToHash.getBytes());
+        }
+    }
+
+    @Nullable
+    /**
+     * Generates SHA-512 hash for given binary data.
+     */
+    public static String getSha512Hash(byte[] dataToHash) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        if (md != null) {
+            md.update(dataToHash);
+            byte byteData[] = md.digest();
+            String base64 = Base64.encodeToString(byteData, Base64.DEFAULT);
+
+            return base64;
+        }
+        return null;
+    }
+
+    @Nullable
+    /**
+     * Gets the extension of a file.
+     */
+    public static String getExtension(File file) {
+        String ext = null;
+        String s = file.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+
+        return ext;
+    }
+
 }
