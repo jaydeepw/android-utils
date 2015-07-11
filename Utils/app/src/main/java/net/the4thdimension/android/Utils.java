@@ -1771,4 +1771,16 @@ public class Utils {
             Log.e(TAG, "Sigh, cant even hide keyboard " + e.getMessage());
         }
     }
+
+    /**
+     * Checks if the build version passed as the parameter is
+     * lower than the current build version.
+     *
+     * @param buildVersion One of the values from {@link android.os.Build.VERSION_CODES}
+     * @return
+     */
+    public static boolean isBuildBelow(int buildVersion) {
+        if (Build.VERSION.SDK_INT < buildVersion) return true;
+        else return false;
+    }
 }
