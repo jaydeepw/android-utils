@@ -132,11 +132,34 @@ public class ViewUtils {
      * ***/
     @SuppressLint("NewApi")
     public static void setBackground(View target, Drawable drawable) {
-        if( Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+        setBackground(target, drawable, false);
+    }
+
+    /**
+     * Sets the passed-in drawable parameter as a background to the
+     * passed in target parameter in an SDK independent way. This
+     * is the recommended way of setting background rather
+     * than using native background setters provided by {@link android.view.View}
+     * class. This method should NOT be used for setting background of an {@link android.widget.ImageView}
+     *
+     * @param target         View to set background to.
+     * @param drawable       background image
+     * @param respectPadding If after setting the background of the view, should its padding be changed back to what it originally was.
+     ***/
+    @SuppressLint("NewApi")
+    public static void setBackground(View target, Drawable drawable, boolean respectPadding) {
+        int topPadding = target.getPaddingTop();
+        int bottomPadding = target.getPaddingBottom();
+        int rightPadding = target.getPaddingRight();
+        int leftPadding = target.getPaddingLeft();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             target.setBackgroundDrawable(drawable);
         } else {
             target.setBackground(drawable);
         }
+
+        if (respectPadding) target.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
     }
 
     public static void tileBackground( Context ctx, int layoutId, View viewToTileBg, int resIdOfTile ) {
