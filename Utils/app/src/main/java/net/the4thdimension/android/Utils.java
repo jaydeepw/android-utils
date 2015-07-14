@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -44,6 +45,8 @@ import android.provider.MediaStore.Images.ImageColumns;
 import android.provider.MediaStore.Images.Media;
 import android.provider.MediaStore.MediaColumns;
 import android.provider.MediaStore.Video;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -52,6 +55,8 @@ import android.text.TextUtils;
 import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -73,6 +78,8 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -587,11 +594,8 @@ public class Utils {
                 chars[i] = Character.toUpperCase(chars[i]);
                 found = true;
             } else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // You
-                // can
-                // add
-                // other
-                // chars
-                // here
+                // can add other
+                // chars here
                 found = false;
             }
         } // end for
@@ -1306,8 +1310,10 @@ public class Utils {
     }
 
     /**
-     * Get the media data from the one of the following media {@link android.content.ContentProvider} This method
-     * should not be called from the main thread of the application.
+     *
+     * Gets the media data from the one of the following media {@link android.content.ContentProvider} This method
+     * should not be called from the main thread of the application. Calling this method may have
+     * performance issues as this may allocate a huge memory array.
      * <ul>
      * <li>{@link android.provider.MediaStore.Images.Media}</li>
      * <li>{@link android.provider.MediaStore.Audio.Media}</li>
@@ -1510,6 +1516,7 @@ public class Utils {
     }
 
     /**
+     * @deprecated Use {@link #toBold(String, String)}
      * Returns {@link android.text.SpannableString} in Bold typeface
      *
      * @param sourceText
@@ -1532,8 +1539,36 @@ public class Utils {
     }
 
     /**
-     * Formats given size in bytes to KB, MB, GB or whatever. This will work up to 1000 TB
+     * Typefaces the string as bold.
+     * If sub-string is null, entire string will be typefaced as bold and returned.
      *
+     * @param string
+     * @param subString The subString within the string to bold. Pass null to bold entire string.
+     *                  @return {@link android.text.SpannableString}
+     */
+    public static SpannableStringBuilder toBold(String string, String subString) {
+        if (TextUtils.isEmpty(string)) {
+            return new SpannableStringBuilder("");
+        }
+
+        SpannableStringBuilder spannableBuilder = new SpannableStringBuilder(string);
+
+        StyleSpan bss = new StyleSpan(Typeface.BOLD);
+        if (subString != null) {
+            int substringNameStart = string.toLowerCase().indexOf(subString);
+            if (substringNameStart > -1) {
+                spannableBuilder.setSpan(bss, substringNameStart, substringNameStart + subString.length(),
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        } else {
+            // set entire text to bold
+            spannableBuilder.setSpan(bss, 0, spannableBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
+        return spannableBuilder;
+    }
+
+    /**
+     * Formats given size in bytes to KB, MB, GB or whatever. This will work up to 1000 TB
      **/
     public static String formatSize(long size) {
 
@@ -1554,8 +1589,11 @@ public class Utils {
      **/
     public static String formatSize(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
-        if (bytes < unit)
+
+        if (bytes < unit) {
             return bytes + " B";
+        }
+
         int exp = (int) (Math.log(bytes) / Math.log(unit));
         String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp - 1) + (si ? "" : "i");
         return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
@@ -1607,7 +1645,7 @@ public class Utils {
         final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
 
         // Add the camera options.
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[] {}));
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
 
         return chooserIntent;
     }
@@ -1656,6 +1694,7 @@ public class Utils {
         return chooserIntent;
     }
 
+    @Nullable
     /**
      * Creates external content:// scheme uri to save the images at. The image saved at this
      * {@link android.net.Uri} will be visible via the gallery application on the device.
@@ -1677,6 +1716,7 @@ public class Utils {
         return imageUri;
     }
 
+    @Nullable
     /**
      * Creates external content:// scheme uri to save the videos at.
      **/
@@ -1697,7 +1737,10 @@ public class Utils {
         return imageUri;
     }
 
+    @Nullable
     /**
+     *
+     * @deprecated Use {#setTextValues} or {#getNullEmptyCheckedValue}
      * Get the correctly appended name from the given name parameters
      *
      * @param firstName
@@ -1764,4 +1807,153 @@ public class Utils {
             return true;
         }
     }
+
+    /**
+     * Hides the already popped up keyboard from the screen.
+     * @param context
+     */
+    public static void hideKeyboard(Context context) {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (Exception e) {
+            Log.e(TAG, "Sigh, cant even hide keyboard " + e.getMessage());
+        }
+    }
+
+    /**
+     * Checks if the build version passed as the parameter is
+     * lower than the current build version.
+     *
+     * @param buildVersion One of the values from {@link android.os.Build.VERSION_CODES}
+     * @return
+     */
+    public static boolean isBuildBelow(int buildVersion) {
+        if (Build.VERSION.SDK_INT < buildVersion) return true;
+        else return false;
+    }
+
+    /**
+     * Sets the two parameter values to the parameter {@link android.widget.TextView}
+     * in null-safe and empty-safe way. Such method can be used when setting firstname-lastname
+     * to a textview in the UI.
+     *
+     * @param textView
+     * @param firstValue String "null" will be treated as null value.
+     * @param secondValue String "null" will be treated as null value.
+     */
+    public static void setTextValues(@NonNull TextView textView, @Nullable String firstValue, @Nullable String secondValue) {
+        String nullEmptyCheckedVal = getNullEmptyCheckedValue(firstValue, secondValue, null);
+        textView.setText(nullEmptyCheckedVal);
+    }
+
+    @Nullable
+    /**
+     * Returns concatenated values of atleast to or more strings provided to it
+     * in a null safe manner.
+     * @param firstValue
+     * @param secondValue
+     * @param delimiter Delimiter to be used to concatnate the parameter strings. If null, space characer will be used.
+     * @param moreValues Optional
+     * @return
+     */
+    public static String getNullEmptyCheckedValue(@Nullable String firstValue, @Nullable String secondValue,
+                                                  @Nullable String delimiter, String... moreValues) {
+        if (TextUtils.isEmpty(delimiter)) {
+            delimiter = " ";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        if (!TextUtils.isEmpty(firstValue) && !firstValue.equalsIgnoreCase("null")
+                && secondValue != null && !secondValue.equalsIgnoreCase("null")) {
+            builder.append(firstValue);
+            builder.append(delimiter);
+            builder.append(secondValue);
+        } else if (!TextUtils.isEmpty(firstValue) && !firstValue.equalsIgnoreCase("null")) {
+            builder.append(firstValue);
+        } else if (!TextUtils.isEmpty(secondValue) && !secondValue.equalsIgnoreCase("null")) {
+            builder.append(secondValue);
+        }
+
+        if (moreValues != null) {
+            for (String value : moreValues) {
+                if (!TextUtils.isEmpty(value) && !value.equalsIgnoreCase("null")) {
+                    builder.append(delimiter);
+                    builder.append(value);
+                }
+            }
+        }
+
+        return builder.toString();
+    }
+
+    @Nullable
+    /**
+     * Partially capitalizes the string from paramter start and offset.
+     *
+     * @param string String to be formatted
+     * @param start  Starting position of the substring to be capitalized
+     * @param offset Offset of characters to be capitalized
+     * @return
+     */
+    public static String capitalizeString(String string, int start, int offset) {
+        if (TextUtils.isEmpty(string)) {
+            return null;
+        }
+        String formattedString = string.substring(start, offset).toUpperCase() + string.substring(offset, string.length());
+        return formattedString;
+    }
+
+    @Nullable
+    /**
+     * Generates SHA-512 hash for given binary data.
+     * @param stringToHash
+     * @return
+     */
+    public static String getSha512Hash(String stringToHash) {
+        if (stringToHash == null) {
+            return null;
+        } else {
+            return getSha512Hash(stringToHash.getBytes());
+        }
+    }
+
+    @Nullable
+    /**
+     * Generates SHA-512 hash for given binary data.
+     */
+    public static String getSha512Hash(byte[] dataToHash) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        if (md != null) {
+            md.update(dataToHash);
+            byte byteData[] = md.digest();
+            String base64 = Base64.encodeToString(byteData, Base64.DEFAULT);
+
+            return base64;
+        }
+        return null;
+    }
+
+    @Nullable
+    /**
+     * Gets the extension of a file.
+     */
+    public static String getExtension(File file) {
+        String ext = null;
+        String s = file.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+
+        return ext;
+    }
+
 }

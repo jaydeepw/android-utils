@@ -21,9 +21,22 @@ Download
 --------
 Gradle:
 ```groovy
-compile 'net.the4thdimension:android-utils:3.0.0'
+compile 'net.the4thdimension:android-utils:3.0.1'
 ```
 AndroidUtils requires Android 4.0+.
+
+Changelog
+============
+
+## v3.0.1
+
+* add hideKeyboard() to programmatically hide keyboard in the UI
+* add setTextValues() and getNullEmptyCheckedValue() methods to help displaying text without worrying about null value check in the UI
+* add method capitalizeString() to completely or partially capitalize the characters in the string
+* add method toBold() to partially or completely typeface a string as bold
+* add crypto helper methods getSha512Hash(String) and getSha512Hash(byte[]) to generate SHA hash
+* add getExtension() for a file helper method
+* add isBuildBelow() to quickly compare agains given Android API level
 
 
 The MIT License
