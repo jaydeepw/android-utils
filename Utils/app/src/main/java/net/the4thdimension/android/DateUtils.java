@@ -344,12 +344,43 @@ public class DateUtils {
      */
     public static String getTimeStamp(Date originalDate){
 
-
         String convertedDate = DateUtils.getRelativeTimeSpanString(originalDate.getTime(),
                 new Date().getTime(),
                 DateUtils.SECOND_IN_MILLIS).toString();
 
         return convertedDate;
+    }
+
+
+    /**
+     * Gets a string TimeStamp phrase like 5 mins ago
+     * yesterday, 3 days ago.
+     *
+     * <br/>
+     * <br/>
+     *
+     * sample usage
+     *
+     *  * <pre>
+     *
+     * {
+     * 	String timeStamp = getTimeStamp(originalDate);
+     *
+     * }
+     * </pre>
+     *
+     * @param originalDateTime time in miliseconds since epoch
+     * @return convertedDate String
+     *
+     */
+    public static String getTimeStamp(Long originalDateTime) {
+
+        String convertedDate = DateUtils.getRelativeTimeSpanString(originalDateTime,
+                new Date().getTime(),
+                DateUtils.SECOND_IN_MILLIS).toString();
+
+        return convertedDate;
+
     }
 
 }
