@@ -2,6 +2,7 @@ Android Utilities
 =============
 
 Library Project for utility classes that can make me(and others) more productive.
+AndroidUtils requires Android 4.0+.
 
 
 **Utility classes included**
@@ -21,9 +22,8 @@ Download
 --------
 Gradle:
 ```groovy
-compile 'net.the4thdimension:android-utils:3.0.1'
+compile 'net.the4thdimension:android-utils:3.0.2'
 ```
-AndroidUtils requires Android 4.0+.
 
 Changelog
 ============
