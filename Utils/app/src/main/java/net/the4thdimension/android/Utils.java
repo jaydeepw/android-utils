@@ -187,7 +187,7 @@ public class Utils {
             };
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx).setMessage(body).setPositiveButton("OK", okListener);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx).setMessage(body).setPositiveButton(android.R.string.ok, okListener);
 
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
@@ -361,7 +361,7 @@ public class Utils {
      * @param noListener
      **/
     public static void showConfirmDialog(Context ctx, String message, DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener) {
-        showConfirmDialog(ctx, message, yesListener, noListener, "Yes", "No");
+        showConfirmDialog(ctx, message, yesListener, noListener, android.R.string.yes, android.R.string.no);
     }
 
     /**
@@ -379,7 +379,7 @@ public class Utils {
      * @param noLabel
      *            Label for no button
      **/
-    public static void showConfirmDialog(Context ctx, String message, DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener, String yesLabel, String noLabel) {
+    public static void showConfirmDialog(Context ctx, String message, DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener, int yesLabel, int noLabel) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
 
