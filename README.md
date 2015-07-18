@@ -28,6 +28,10 @@ AndroidUtils requires Android 4.0+.
 Changelog
 ============
 
+## v3.0.2
+
+* fix [#10](https://github.com/jaydeepw/android-utils/issues/10). Remove unnecessary app_icon and strings.
+
 ## v3.0.1
 
 * add hideKeyboard() to programmatically hide keyboard in the UI
