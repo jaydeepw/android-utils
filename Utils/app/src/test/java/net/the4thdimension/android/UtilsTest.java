@@ -31,4 +31,40 @@ public class UtilsTest extends TestCase {
         assertEquals("Conversion from bytes to MB", expected,
                 formattedSize);
     }
+
+    @Test
+    public void testCapitalizeString() throws Exception {
+        String stringToCap = "this is awesome";
+        String formattedSize = Utils.capitalizeString(stringToCap);
+        String expected = "This Is Awesome";
+
+        // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
+        // use this method because float is not precise
+        assertEquals("Capitalization failed", expected,
+                formattedSize);
+    }
+
+    @Test
+    public void testCapitalizeStringForNull() throws Exception {
+        String stringToCap = null;
+        String formattedSize = Utils.capitalizeString(stringToCap);
+        String expected = null;
+
+        // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
+        // use this method because float is not precise
+        assertEquals("Capitalization failed", expected,
+                formattedSize);
+    }
+
+    @Test
+    public void testCapitalizeStringForEmpty() throws Exception {
+        String stringToCap = "";
+        String formattedSize = Utils.capitalizeString(stringToCap);
+        String expected = "";
+
+        // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
+        // use this method because float is not precise
+        assertEquals("Capitalization failed", expected,
+                formattedSize);
+    }
 }

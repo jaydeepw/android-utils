@@ -535,13 +535,16 @@ public class Utils {
         }
     }
 
+    @Nullable
     /**
      * Capitalizes each word in the string.
-     **/
+     * @param string
+     * @return
+     */
     public static String capitalizeString(String string) {
 
         if (string == null) {
-            throw new NullPointerException("String to capitalize cannot be null");
+            return null;
         }
 
         char[] chars = string.toLowerCase().toCharArray();
@@ -562,12 +565,15 @@ public class Utils {
 
     /**
      * Checks if the DB with the given name is present on the device.
-     **/
+     * @param packageName
+     * @param dbName
+     * @return
+     */
     public static boolean isDatabasePresent(String packageName, String dbName) {
-        SQLiteDatabase checkDB = null;
+        SQLiteDatabase sqLiteDatabase = null;
         try {
-            checkDB = SQLiteDatabase.openDatabase("/data/data/" + packageName + "/databases/" + dbName, null, SQLiteDatabase.OPEN_READONLY);
-            checkDB.close();
+            sqLiteDatabase = SQLiteDatabase.openDatabase("/data/data/" + packageName + "/databases/" + dbName, null, SQLiteDatabase.OPEN_READONLY);
+            sqLiteDatabase.close();
         } catch (SQLiteException e) {
             // database doesn't exist yet.
             e.printStackTrace();
@@ -577,7 +583,7 @@ public class Utils {
             Log.e(TAG, "Exception " + e.getMessage());
         }
 
-        return (checkDB != null);
+        return (sqLiteDatabase != null);
     }
 
     /**
