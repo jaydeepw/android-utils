@@ -512,18 +512,27 @@ public class Utils {
 
     /**
      * Checks if the input parameter is a valid email.
-     **/
+     *
+     * @param email
+     * @return
+     */
     public static boolean isValidEmail(String email) {
+
+        if (TextUtils.isEmpty(email)) {
+            return false;
+        }
+
         final String emailPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         Matcher matcher;
         Pattern pattern = Pattern.compile(emailPattern);
 
         matcher = pattern.matcher(email);
 
-        if (matcher != null)
+        if (matcher != null) {
             return matcher.matches();
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -568,9 +577,7 @@ public class Utils {
             Log.e(TAG, "Exception " + e.getMessage());
         }
 
-        boolean isDbPresent = checkDB != null;
-
-        return isDbPresent;
+        return (checkDB != null);
     }
 
     /**
@@ -686,25 +693,20 @@ public class Utils {
     }
 
     /**
+     * @return Path of the image file that has been written.
+     * @deprecated Use {@link MediaUtils#writeImage(Context, byte[])}
      * Writes the given image to the external storage of the device. If external storage is not
      * available, the image is written to the application private directory
-     *
-     * @return Path of the image file that has been written.
      **/
     public static String writeImage(Context ctx, byte[] imageData) {
 
-        // TODO: move to MediaUtils
         final String FILE_NAME = "photograph.jpeg";
         File dir = null;
         String filePath = null;
         OutputStream imageFileOS;
 
         dir = getStorageDirectory(ctx, null);
-
-        // dir.mkdirs();
         File f = new File(dir, FILE_NAME);
-
-        // File f = getFile( FILE_NAME );
 
         try {
             imageFileOS = new FileOutputStream(f);
@@ -1123,36 +1125,35 @@ public class Utils {
     }
 
     /**
-     * Get the type of the media. Audio, Video or Image.
-     *
      * @return Lower case string for one of above listed media type
+     * @deprecated Use {@link MediaUtils#getMediaType(Uri)}
+     * Get the type of the media. Audio, Video or Image.
      */
     public static String getMediaType(String contentType) {
-        // TODO: move to MediaUtils
         if (isMedia(contentType)) {
-            if (isVideo(contentType))
+            if (isVideo(contentType)) {
                 return "video";
-            else if (isAudio(contentType))
+            } else if (isAudio(contentType)) {
                 return "audio";
-            else if (isImage(contentType))
+            } else if (isImage(contentType)) {
                 return "image";
-            else
+            } else {
                 return null;
+            }
         } else {
             return null;
         }
     }
 
     /**
+     * @param mimeType standard MIME type of the data.
+     * @deprecated {@link MediaUtils#isMedia(String)}
      * Identifies if the content represented by the parameter mimeType is media. Image, Audio and
      * Video is treated as media by this method. You can refer to standard MIME type here. <a
      * href="http://www.iana.org/assignments/media-types/media-types.xhtml" >Standard MIME
      * types.</a>
-     *
-     * @param mimeType standard MIME type of the data.
      */
     public static boolean isMedia(String mimeType) {
-        // TODO: move to MediaUtils
         boolean isMedia = false;
 
         if (mimeType != null) {
@@ -1200,51 +1201,54 @@ public class Utils {
     }
 
     /**
+     * @deprecated Use {@link MediaUtils#isImage(String)}
      * Returns true if the mime type is a standard image mime type
      */
     public static boolean isImage(String mimeType) {
-        // TODO: move to MediaUtils
-        // TODO: apply regex patter for checking the MIME type
         if (mimeType != null) {
-            if (mimeType.startsWith("image/"))
+            if (mimeType.startsWith("image/")) {
                 return true;
-            else
+            } else {
                 return false;
-        } else
-            return false;
-    }
-
-    /**
-     * Returns true if the mime type is a standard audio mime type
-     */
-    public static boolean isAudio(String mimeType) {
-        // TODO: move to MediaUtils
-        // TODO: apply regex patter for checking the MIME type
-        if (mimeType != null) {
-            if (mimeType.startsWith("audio/"))
-                return true;
-            else
-                return false;
-        } else
-            return false;
-    }
-
-    /**
-     * Returns true if the mime type is a standard video mime type
-     */
-    public static boolean isVideo(String mimeType) {
-        // TODO: move to MediaUtils
-        // TODO: apply regex patter for checking the MIME type
-        if (mimeType != null) {
-            if (mimeType.startsWith("video/"))
-                return true;
-            else
-                return false;
+            }
         } else {
             return false;
         }
     }
 
+    /**
+     * @deprecated Use {@link MediaUtils#isAudio(String)}
+     * Returns true if the mime type is a standard audio mime type
+     */
+    public static boolean isAudio(String mimeType) {
+        if (mimeType != null) {
+            if (mimeType.startsWith("audio/")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @deprecated Use {@link MediaUtils#isVideo(String)}
+     * Returns true if the mime type is a standard video mime type
+     */
+    public static boolean isVideo(String mimeType) {
+        if (mimeType != null) {
+            if (mimeType.startsWith("video/")) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Nullable
     /**
      * Gets the media data from the one of the following media {@link android.content.ContentProvider} This method
      * should not be called from the main thread of the application. Calling this method may have
@@ -1255,27 +1259,26 @@ public class Utils {
      * <li>{@link android.provider.MediaStore.Video.Media}</li>
      * </ul>
      *
-     * @param ctx Context object
+     * @param context Context object
      * @param uri Media content uri of the image, audio or video resource
      */
-    public static byte[] getMediaData(Context ctx, Uri uri) {
-        // TODO: move to MediaUtils
+    public static byte[] getMediaData(Context context, Uri uri) {
         if (uri == null) {
             throw new NullPointerException("Uri cannot be null");
         }
 
-        Cursor cur = ctx.getContentResolver().query(uri, new String[]{Media.DATA}, null, null, null);
+        Cursor cursor = context.getContentResolver().query(uri, new String[]{Media.DATA}, null, null, null);
         byte[] data = null;
 
         try {
-            if (cur != null && cur.getCount() > 0) {
-                if (cur.moveToNext()) {
-                    String path = cur.getString(cur.getColumnIndex(Media.DATA));
+            if (cursor != null && cursor.getCount() > 0) {
+                if (cursor.moveToNext()) {
+                    String path = cursor.getString(cursor.getColumnIndex(Media.DATA));
 
                     try {
-                        File f = new File(path);
-                        FileInputStream fis = new FileInputStream(f);
-                        data = readStreamToBytes(fis);
+                        File file = new File(path);
+                        FileInputStream fileInputStream = new FileInputStream(file);
+                        data = readStreamToBytes(fileInputStream);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
@@ -1284,11 +1287,12 @@ public class Utils {
 
                     // Log.v( TAG, "#getVideoData byte.size: " + data.length );
                 } // end while
-            } else
+            } else {
                 Log.e(TAG, "#getMediaData cur is null or blank");
+            }
         } finally {
-            if (cur != null && !cur.isClosed()) {
-                cur.close();
+            if (cursor != null && !cursor.isClosed()) {
+                cursor.close();
             }
         }
 
@@ -1302,8 +1306,9 @@ public class Utils {
      **/
     public static byte[] readStreamToBytes(InputStream inputStream) {
 
-        if (inputStream == null)
+        if (inputStream == null) {
             throw new NullPointerException("InputStream is null");
+        }
 
         byte[] bytesData = null;
         BufferedReader reader = null;
@@ -1347,17 +1352,16 @@ public class Utils {
     }
 
     /**
-     * Gets the size of the media resource pointed to by the paramter mediaUri.
-     * <p/>
-     * Known bug: for unknown reason, the image size for some images was found to be 0
-     *
      * @param mediaUri uri to the media resource. For e.g. content://media/external/images/media/45490 or
      *                 content://media/external/video/media/45490
      * @return Size in bytes
+     * @deprecated Use {@link MediaUtils#getMediaSize(Context, Uri)}
+     * Gets the size of the media resource pointed to by the paramter mediaUri.
+     * <p/>
+     * Known bug: for unknown reason, the image size for some images was found to be 0
      **/
-    public static long getMediaSize(Context ctx, Uri mediaUri) {
-        // TODO: move to MediaUtils
-        Cursor cur = ctx.getContentResolver().query(mediaUri, new String[]{Media.SIZE}, null, null, null);
+    public static long getMediaSize(Context context, Uri mediaUri) {
+        Cursor cur = context.getContentResolver().query(mediaUri, new String[]{Media.SIZE}, null, null, null);
         long size = -1;
 
         try {
@@ -1388,10 +1392,10 @@ public class Utils {
     }
 
     /**
+     * @deprecated {@link MediaUtils#getMediaFileName(Context, Uri)}
      * Gets media file name.
      **/
     public static String getMediaFileName(Context ctx, Uri mediaUri) {
-        // TODO: move to MediaUtils
         String colName = MediaColumns.DISPLAY_NAME;
         Cursor cur = ctx.getContentResolver().query(mediaUri, new String[]{colName}, null, null, null);
         String dispName = null;
@@ -1426,10 +1430,10 @@ public class Utils {
 
     @Nullable
     /**
+     * @deprecated Use {@link MediaUtils#getMediaType(Uri)}
      * Gets media type from the Uri.
      */
     public static String getMediaType(Uri uri) {
-        // TODO: move to MediaUtils
         if (uri == null) {
             return null;
         }
@@ -1530,7 +1534,7 @@ public class Utils {
 
     /**
      * Creates the uri to a file located on external storage or application internal storage.
-     **/
+     */
     public static Uri createUri(Context ctx) {
         File root = getStorageDirectory(ctx, null);
         root.mkdirs();
@@ -1541,11 +1545,15 @@ public class Utils {
     }
 
     /**
+     * @param ctx
+     * @param savingUri
+     * @param durationInSeconds
+     * @return
+     * @deprecated Use {@link MediaUtils#createTakeVideoIntent(Activity, Uri, int)}
      * Creates an intent to take a video from camera or gallery or any other application that can
      * handle the intent.
-     **/
+     */
     public static Intent createTakeVideoIntent(Activity ctx, Uri savingUri, int durationInSeconds) {
-        // TODO: move to MediaUtils
 
         if (savingUri == null) {
             throw new NullPointerException("Uri cannot be null");
@@ -1580,16 +1588,15 @@ public class Utils {
     }
 
     /**
+     * @param savingUri Uri to store a high resolution image at. If the user takes the picture using the
+     *                  camera the image will be stored at this uri.
+     * @deprecated Use {@link MediaUtils#createTakePictureIntent(Activity, Uri)}
      * Creates a ACTION_IMAGE_CAPTURE photo & ACTION_GET_CONTENT intent. This intent will be
      * aggregation of intents required to take picture from Gallery and Camera at the minimum. The
      * intent will also be directed towards the apps that are capable of sourcing the image data.
      * For e.g. Dropbox, Astro file manager.
-     *
-     * @param savingUri Uri to store a high resolution image at. If the user takes the picture using the
-     *                  camera the image will be stored at this uri.
      **/
     public static Intent createTakePictureIntent(Activity ctx, Uri savingUri) {
-        // TODO: move to MediaUtils
 
         if (savingUri == null) {
             throw new NullPointerException("Uri cannot be null");
@@ -1624,11 +1631,11 @@ public class Utils {
 
     @Nullable
     /**
+     * @deprecated Use {@link MediaUtils#createImageUri(Context)}
      * Creates external content:// scheme uri to save the images at. The image saved at this
      * {@link android.net.Uri} will be visible via the gallery application on the device.
-     **/
+     */
     public static Uri createImageUri(Context ctx) throws IOException {
-        // TODO: move to MediaUtils
 
         if (ctx == null) {
             throw new NullPointerException("Context cannot be null");
@@ -1646,16 +1653,16 @@ public class Utils {
 
     @Nullable
     /**
+     * @deprecated Use {@link MediaUtils#createVideoUri(Context)}
      * Creates external content:// scheme uri to save the videos at.
-     **/
+     */
     public static Uri createVideoUri(Context ctx) throws IOException {
-        // TODO: move to MediaUtils
 
         if (ctx == null) {
             throw new NullPointerException("Context cannot be null");
         }
 
-        Uri imageUri = null;
+        Uri imageUri;
 
         ContentValues values = new ContentValues();
         values.put(MediaColumns.TITLE, "");
@@ -1681,24 +1688,26 @@ public class Utils {
     public static String getName(String firstName, String lastName) {
         if (!TextUtils.isEmpty(firstName) && !TextUtils.isEmpty(lastName)) {
             return firstName + " " + lastName;
-        } else if (!TextUtils.isEmpty(firstName))
+        } else if (!TextUtils.isEmpty(firstName)) {
             return firstName;
-        else if (!TextUtils.isEmpty(lastName))
+        } else if (!TextUtils.isEmpty(lastName)) {
             return lastName;
-        else
+        } else {
             return null;
+        }
     }
 
     public static Bitmap roundBitmap(Bitmap bmp, int radius) {
         Bitmap sbmp;
-        if (bmp.getWidth() != radius || bmp.getHeight() != radius)
+        if (bmp.getWidth() != radius || bmp.getHeight() != radius) {
             sbmp = Bitmap.createScaledBitmap(bmp, radius, radius, false);
-        else
+        } else {
             sbmp = bmp;
+        }
+
         Bitmap output = Bitmap.createBitmap(sbmp.getWidth(), sbmp.getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
-        final int color = 0xffa19774;
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, sbmp.getWidth(), sbmp.getHeight());
 
@@ -1714,10 +1723,16 @@ public class Utils {
         return output;
     }
 
+    /**
+     * Checks if given url is a relative path.
+     *
+     * @param url
+     * @return false if parameter url is null or false
+     */
     public static final boolean isRelativeUrl(String url) {
 
         if (TextUtils.isEmpty(url)) {
-            throw new NullPointerException("Url cannot be null");
+            return false;
         }
 
         Uri uri = Uri.parse(url);
