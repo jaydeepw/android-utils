@@ -100,7 +100,7 @@ import java.util.regex.Pattern;
  * <br/>
  *
  * @author Jay
- ****/
+ */
 public class Utils {
 
     private static final String TAG = Utils.class.getSimpleName();
@@ -137,9 +137,9 @@ public class Utils {
      * @return Returns true if the Internet connection is available. False otherwise.
      **/
     public static boolean isInternetAvailable(Context ctx) {
-        ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
         // if network is NOT available networkInfo will be null
         // otherwise check if we are connected
@@ -156,8 +156,9 @@ public class Utils {
     public static boolean isSdCardMounted() {
         String status = Environment.getExternalStorageState();
 
-        if (status.equals(Environment.MEDIA_MOUNTED))
+        if (status != null && status.equals(Environment.MEDIA_MOUNTED)) {
             return true;
+        }
 
         return false;
     }
@@ -518,7 +519,7 @@ public class Utils {
      */
     public static boolean isValidEmail(String email) {
 
-        if (TextUtils.isEmpty(email)) {
+        if (email == null) {
             return false;
         }
 

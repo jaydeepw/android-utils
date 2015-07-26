@@ -35,36 +35,58 @@ public class UtilsTest extends TestCase {
     @Test
     public void testCapitalizeString() throws Exception {
         String stringToCap = "this is awesome";
-        String formattedSize = Utils.capitalizeString(stringToCap);
+        String capitalizedString = Utils.capitalizeString(stringToCap);
         String expected = "This Is Awesome";
 
         // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
         // use this method because float is not precise
         assertEquals("Capitalization failed", expected,
-                formattedSize);
+                capitalizedString);
     }
 
     @Test
     public void testCapitalizeStringForNull() throws Exception {
         String stringToCap = null;
-        String formattedSize = Utils.capitalizeString(stringToCap);
+        String capitalizedString = Utils.capitalizeString(stringToCap);
         String expected = null;
 
         // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
         // use this method because float is not precise
         assertEquals("Capitalization failed", expected,
-                formattedSize);
+                capitalizedString);
     }
 
     @Test
     public void testCapitalizeStringForEmpty() throws Exception {
         String stringToCap = "";
-        String formattedSize = Utils.capitalizeString(stringToCap);
+        String capitalizedString = Utils.capitalizeString(stringToCap);
         String expected = "";
 
         // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
         // use this method because float is not precise
         assertEquals("Capitalization failed", expected,
-                formattedSize);
+                capitalizedString);
+    }
+
+    @Test
+    public void testIsValidEmailTrue() throws Exception {
+        boolean valid = Utils.isValidEmail("jay@twitter.com");
+        boolean expected = true;
+
+        // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
+        // use this method because float is not precise
+        assertEquals("Email invalid", expected,
+                valid);
+    }
+
+    @Test
+    public void testIsValidEmailFalse() throws Exception {
+        boolean invalid = Utils.isValidEmail("jay@twitter");
+        boolean expected = false;
+
+        // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
+        // use this method because float is not precise
+        assertEquals("Email invalid", expected,
+                invalid);
     }
 }
