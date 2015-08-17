@@ -317,8 +317,8 @@ public class Utils {
      * Gives the device independent constant which can be used for scaling images, manipulating view
      * sizes and changing dimension and display pixels etc.
      **/
-    public static float getDensityMultiplier(Context ctx) {
-        return ctx.getResources().getDisplayMetrics().density;
+    public static float getDensityMultiplier(Context context) {
+        return context.getResources().getDisplayMetrics().density;
     }
 
     /**
@@ -406,12 +406,16 @@ public class Utils {
     /**
      * Gets the version name of the application. For e.g. 1.9.3
      **/
-    public static String getApplicationVersionNumber(Context ctx) {
+    public static String getApplicationVersionNumber(Context context) {
 
         String versionName = null;
 
+        if (context == null) {
+            return versionName;
+        }
+
         try {
-            versionName = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionName;
+            versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -450,8 +454,9 @@ public class Utils {
      **/
     public static boolean isServiceRunning(Context ctx, String serviceName) {
 
-        if (serviceName == null)
+        if (serviceName == null) {
             throw new NullPointerException("Service name cannot be null");
+        }
 
         ActivityManager manager = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -566,6 +571,7 @@ public class Utils {
 
     /**
      * Checks if the DB with the given name is present on the device.
+     *
      * @param packageName
      * @param dbName
      * @return
@@ -833,9 +839,9 @@ public class Utils {
     }
 
     /**
-     * Calculates the elapsed time after the given parameter date.
-     *
      * @param time ISO formatted time when the event occurred in local time zone.
+     * @deprecated Totally bloated code.
+     * Calculates the elapsed time after the given parameter date.
      **/
     public static String getElapsedTime(String time) {
         TimeZone defaultTimeZone = TimeZone.getDefault();
@@ -1032,9 +1038,10 @@ public class Utils {
         if (sourceBitmap.getWidth() < sourceBitmap.getHeight()) {
             // image is portrait
             resized = Bitmap.createScaledBitmap(sourceBitmap, newHeight, newWidth, true);
-        } else
+        } else {
             // image is landscape
             resized = Bitmap.createScaledBitmap(sourceBitmap, newWidth, newHeight, true);
+        }
 
         resized = Bitmap.createScaledBitmap(sourceBitmap, newWidth, newHeight, true);
 
@@ -1131,6 +1138,7 @@ public class Utils {
         return true;
     }
 
+    @Nullable
     /**
      * @return Lower case string for one of above listed media type
      * @deprecated Use {@link MediaUtils#getMediaType(Uri)}
@@ -1257,6 +1265,8 @@ public class Utils {
 
     @Nullable
     /**
+     * @deprecated This is a monster that will lead to OutOfMemory exception some day and the world
+     * will come to an end.
      * Gets the media data from the one of the following media {@link android.content.ContentProvider} This method
      * should not be called from the main thread of the application. Calling this method may have
      * performance issues as this may allocate a huge memory array.

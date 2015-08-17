@@ -1,13 +1,21 @@
 package net.the4thdimension.android;
 
+import android.content.Context;
+import android.test.mock.MockContext;
+
 import junit.framework.TestCase;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 /**
  * Created by jay on 25/7/15.
  */
 public class UtilsTest extends TestCase {
+
+    private MockContext mockContext = new MockContext();
 
     @Test
     public void testFormatSizeKb() throws Exception {
@@ -88,5 +96,18 @@ public class UtilsTest extends TestCase {
         // use this method because float is not precise
         assertEquals("Email invalid", expected,
                 invalid);
+    }
+
+    @Mock
+    Context mContext;
+
+    @Test
+    public void test() throws Exception {
+        String applicationVersionNumber = Utils.getApplicationVersionNumber(mContext);
+        String expected = "1.2.3";
+
+        // Log.i(TAG, "formattedSize: " + formattedSize + " expected: " + expected);
+        // use this method because float is not precise
+        assertEquals("App version invalid", expected, applicationVersionNumber);
     }
 }
