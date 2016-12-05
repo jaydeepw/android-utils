@@ -22,13 +22,25 @@ Download
 --------
 Gradle:
 ```groovy
-compile 'net.the4thdimension:android-utils:3.0.2'
+compile 'com.github.jaydeepw:android-utils:3.0.3'
 ```
 
 Changelog
 ============
 
+## v3.0.4
+
+Method count: 506
+JAR size: 46KB
+
+* fix [#2](https://github.com/jaydeepw/android-utils/issues/2). Overload showAlert/showDialog methods with resId parameter
+* fix [#12](https://github.com/jaydeepw/android-utils/issues/12). Use try catch and return boolean in sharePreferenceManger#clear method.
+* fix [#11](https://github.com/jaydeepw/android-utils/issues/11). Add file list utils method to FileUtils class.
+
 ## v3.0.2
+
+Method count: 11837
+JAR size: 56KB
 
 * fix [#10](https://github.com/jaydeepw/android-utils/issues/10). Remove unnecessary app_icon and strings.
 
