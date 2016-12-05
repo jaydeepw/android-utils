@@ -1,20 +1,19 @@
 
 package net.the4thdimension.android;
 
+import android.net.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import android.net.ParseException;
-
 /***
  * Provides helper methods for date utilities.
+ * Yes, some times I write shit code.
  ***/
 public class DateUtils {
-
-	private static final String TAG = DateUtils.class.getSimpleName();
 
 	/***
 	 * Converts ISO date string to UTC timezone equivalent.
