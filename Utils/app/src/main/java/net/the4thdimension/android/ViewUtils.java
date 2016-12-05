@@ -158,4 +158,19 @@ public class ViewUtils {
             Log.e(TAG, "#tileBackground Exception while tiling the background of the view");
         }
     }
+
+    /**
+     * Set style to the parameter textview considering the current build SDK version.
+     * @param activity
+     * @param textView
+     * @param style
+     */
+    public static void setStyle(Activity activity, TextView textView,
+                                int style) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            textView.setTextAppearance(style);
+        } else {
+            textView.setTextAppearance(activity, style);
+        }
+    }
 }

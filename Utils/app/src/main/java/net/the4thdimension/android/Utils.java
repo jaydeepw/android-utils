@@ -825,7 +825,8 @@ public class Utils {
         try {
             s = s.substring(0, 22) + s.substring(23);
         } catch (IndexOutOfBoundsException e) {
-            throw new org.apache.http.ParseException();
+            // throw new org.apache.http.ParseException();
+            e.printStackTrace();
         }
 
         Date date = null;
