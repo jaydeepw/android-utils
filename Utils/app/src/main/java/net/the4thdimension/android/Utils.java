@@ -167,14 +167,23 @@ public class Utils {
      * Shows an alert dialog with the OK button. When the user presses OK button, the dialog
      * dismisses.
      **/
-    public static void showAlertDialog(Context ctx, @StringRes String title, String body) {
-        showAlertDialog(ctx, title, body, null);
+    public static void showAlertDialog(Context context, @StringRes int titleResId, @StringRes int bodyResId) {
+        showAlertDialog(context, context.getString(titleResId),
+                context.getString(bodyResId), null);
+    }
+
+    /**
+     * Shows an alert dialog with the OK button. When the user presses OK button, the dialog
+     * dismisses.
+     **/
+    public static void showAlertDialog(Context context, String title, String body) {
+        showAlertDialog(context, title, body, null);
     }
 
     /**
      * Shows an alert dialog with OK button
      **/
-    public static void showAlertDialog(Context ctx, String title, String body, DialogInterface.OnClickListener okListener) {
+    public static void showAlertDialog(Context context, String title, String body, DialogInterface.OnClickListener okListener) {
 
         if (okListener == null) {
             okListener = new DialogInterface.OnClickListener() {
@@ -185,7 +194,8 @@ public class Utils {
             };
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(ctx).setMessage(body).setPositiveButton("OK", okListener);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setMessage(body).setPositiveButton("OK", okListener);
 
         if (!TextUtils.isEmpty(title)) {
             builder.setTitle(title);
