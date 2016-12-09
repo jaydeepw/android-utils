@@ -9,46 +9,46 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AwsUtils {
 
-	/***
-	 * Computes RFC 2104-compliant HMAC signature. This can be used to sign the Amazon S3
-	 * request urls
-	 * 
-	 * @param data The data to be signed.
-	 * @param key The signing key.
-	 * @return The Base64-encoded RFC 2104-compliant HMAC signature.
-	 * @throws java.security.SignatureException when signature generation fails
-	 */
-	public static String getHMac(String data, String key) throws SignatureException {
-		
-		if(data == null) {
-			throw new NullPointerException("Data to be signed cannot be null");
-		}
-		
-		String result = null;
-		try {
+    /***
+     * Computes RFC 2104-compliant HMAC signature. This can be used to sign the Amazon S3
+     * request urls
+     *
+     * @param data The data to be signed.
+     * @param key  The signing key.
+     * @return The Base64-encoded RFC 2104-compliant HMAC signature.
+     * @throws java.security.SignatureException when signature generation fails
+     */
+    public static String getHMac(String data, String key) throws SignatureException {
 
-			final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
+        if (data == null) {
+            throw new NullPointerException("Data to be signed cannot be null");
+        }
 
-			// get an hmac_sha1 key from the raw key bytes
-			SecretKeySpec signingKey = new SecretKeySpec(key.getBytes(), HMAC_SHA1_ALGORITHM);
+        String result = null;
+        try {
 
-			// get an hmac_sha1 Mac instance &
-			// initialize with the signing key
-			Mac mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
-			mac.init(signingKey);
+            final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 
-			// compute the hmac on input data bytes
-			byte[] digest = mac.doFinal(data.getBytes());
+            // get an hmac_sha1 key from the raw key bytes
+            SecretKeySpec signingKey = new SecretKeySpec(key.getBytes(), HMAC_SHA1_ALGORITHM);
 
-			if(digest != null) {
-				// Base 64 Encode the results
-				result = Base64.encodeToString(digest, Base64.NO_WRAP);				
-			}
+            // get an hmac_sha1 Mac instance &
+            // initialize with the signing key
+            Mac mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
+            mac.init(signingKey);
 
-		} catch (Exception e) {
-			throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
-		}
+            // compute the hmac on input data bytes
+            byte[] digest = mac.doFinal(data.getBytes());
 
-		return result;
-	}
+            if (digest != null) {
+                // Base 64 Encode the results
+                result = Base64.encodeToString(digest, Base64.NO_WRAP);
+            }
+
+        } catch (Exception e) {
+            throw new SignatureException("Failed to generate HMAC : " + e.getMessage());
+        }
+
+        return result;
+    }
 }
