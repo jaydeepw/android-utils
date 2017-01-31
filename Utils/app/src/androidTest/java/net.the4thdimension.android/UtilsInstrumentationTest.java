@@ -5,7 +5,7 @@ import android.test.AndroidTestCase;
 /**
  * Created by jay on 25/7/15.
  */
-public class UtilsTest extends AndroidTestCase {
+public class UtilsInstrumentationTest extends AndroidTestCase {
 
     public void testAppVersionNumber() throws Exception {
         String applicationVersionNumber = Utils.getApplicationVersionNumber(null);

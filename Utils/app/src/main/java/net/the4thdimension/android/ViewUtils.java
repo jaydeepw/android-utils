@@ -121,7 +121,9 @@ public class ViewUtils {
         }
     }
 
+    @Deprecated
     /**
+     * Use {@link ViewCompat#setBackground(view, background);} instead.
      * Sets the passed-in drawable parameter as a background to the
      * passed in target parameter in an SDK independent way. This
      * is the recommended way of setting background rather
@@ -156,12 +158,12 @@ public class ViewUtils {
             }
 
         } catch (Exception e) {
-            Log.e(TAG, "#tileBackground Exception while tiling the background of the view");
+            Log.e(TAG, "Exception while tiling the background of the view");
         }
     }
 
     /**
-     * Set style to the parameter textview considering the current build SDK version.
+     * Set style to the parameter text view considering the current build SDK version.
      *
      * @param activity
      * @param textView
