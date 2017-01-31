@@ -2,8 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nl.changer.android.opensource" >
 
-    <application
-        android:allowBackup="true" >
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application >
     </application>
 
 </manifest>

@@ -55,7 +55,7 @@ public class ImageUtils {
      * <p>
      * When dealing with the bitmaps of bigger size, this method must be called from a non-UI
      * thread.
-     **/
+     */
     public static Bitmap scaleBitmap(Context ctx, Bitmap source, int newHeight) {
 
         // Log.v( TAG, "#scaleDownBitmap Original w: " + source.getWidth() + " h: " +
