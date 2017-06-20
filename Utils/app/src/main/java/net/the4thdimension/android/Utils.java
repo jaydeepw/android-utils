@@ -137,7 +137,9 @@ public class Utils {
      * @return Returns true if the Internet connection is available. False otherwise.
      **/
     public static boolean isInternetAvailable(Context ctx) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // using received context (typically activity) to get SystemService causes memory link as this holds strong reference to that activity.
+        // use application level context instead, which is available till app dies.
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
