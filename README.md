@@ -8,12 +8,13 @@ AndroidUtils requires Android 4.0+.
 **Utility classes included**
 
 * Utils - Set of general purpose utility methods.
+* FileUtils - Set of general purpose utility methods for file operation.
 * MediaUtils - Set of utilities to handle media resize, scaling, rotation and other relevant stuff.
 * ViewUtils - Set of utilities to handle Android Views' related stuff.
 * ImageUtils - Set of utilities to handle image manipulation.
-* AudioUtils - Set of utilities to handle audio recodring, playing and saving to disk.
+* AudioUtils - Set of utilities to handle audio recording, playing and saving to disk.
 * DateUtils - Set of utilities to handle date manipulation.
-* StorageManager - Android SharedPreferences abstraction
+* StorageManager - Android SharedPreferences abstraction.
 * YouTubeUtils - Set of utilities to handle YouTube related stuff.
 
 ----
@@ -22,7 +23,7 @@ Download
 --------
 Gradle:
 ```groovy
-compile 'com.github.jaydeepw:android-utils:3.0.3'
+compile 'com.github.jaydeepw:android-utils:3.0.4'
 ```
 
 Changelog
@@ -31,6 +32,7 @@ Changelog
 ## v3.0.4
 
 Method count: 506
+
 JAR size: 46KB
 
 * fix [#2](https://github.com/jaydeepw/android-utils/issues/2). Overload showAlert/showDialog methods with resId parameter
@@ -40,6 +42,7 @@ JAR size: 46KB
 ## v3.0.2
 
 Method count: 11837
+
 JAR size: 56KB
 
 * fix [#10](https://github.com/jaydeepw/android-utils/issues/10). Remove unnecessary app_icon and strings.
@@ -58,7 +61,7 @@ JAR size: 56KB
 The MIT License
 =============
 
-**Copyright (c) 2013 Jaydeep**
+**Copyright (c) 2016 Jaydeep**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

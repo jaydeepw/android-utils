@@ -137,7 +137,9 @@ public class Utils {
      * @return Returns true if the Internet connection is available. False otherwise.
      **/
     public static boolean isInternetAvailable(Context ctx) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // using received context (typically activity) to get SystemService causes memory link as this holds strong reference to that activity.
+        // use application level context instead, which is available till app dies.
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
@@ -468,7 +470,8 @@ public class Utils {
             throw new NullPointerException("Service name cannot be null");
         }
 
-        ActivityManager manager = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+        // use application level context to avoid unnecessary leaks.
+        ActivityManager manager = (ActivityManager) ctx.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
         for (RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (service.service.getClassName().equals(serviceName)) {
                 return true;
@@ -483,7 +486,8 @@ public class Utils {
      * rooted devices.
      **/
     public static String getDeviceImei(Context ctx) {
-        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        // use application level context to avoid unnecessary leaks.
+        TelephonyManager telephonyManager = (TelephonyManager) ctx.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
     }
 
@@ -513,7 +517,8 @@ public class Utils {
      **/
     public static int getDataConnectionType(Context ctx) {
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // use application level context to avoid unnecessary leaks.
+        ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (connectivityManager != null && connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE) != null) {
             if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected()) {
@@ -907,7 +912,8 @@ public class Utils {
      * device.
      **/
     public static void setMockLocation(Context ctx, double longitude, double latitude) {
-        LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        // use application level context to avoid unnecessary leaks.
+        LocationManager locationManager = (LocationManager) ctx.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         locationManager.addTestProvider(LocationManager.GPS_PROVIDER, "requiresNetwork" == "", "requiresSatellite" == "", "requiresCell" == "", "hasMonetaryCost" == "", "supportsAltitude" == "", "supportsSpeed" == "", "supportsBearing" == "",
 
@@ -1786,7 +1792,8 @@ public class Utils {
      */
     public static void hideKeyboard(Context context) {
         try {
-            InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            // use application level context to avoid unnecessary leaks.
+            InputMethodManager inputManager = (InputMethodManager) context.getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception e) {
             Log.e(TAG, "Sigh, cant even hide keyboard " + e.getMessage());
