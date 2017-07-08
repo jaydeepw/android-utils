@@ -138,7 +138,7 @@ public class Utils {
      **/
     public static boolean isInternetAvailable(Context ctx) {
         // using received context (typically activity) to get SystemService causes memory link as this holds strong reference to that activity.
-        // use application level context instead, which is available till app dies.
+        // use application level context instead, which is available until the app dies.
         ConnectivityManager connectivityManager = (ConnectivityManager) ctx.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
