@@ -23,11 +23,19 @@ Download
 --------
 Gradle:
 ```groovy
-compile 'com.github.jaydeepw:android-utils:3.0.4'
+compile 'com.github.jaydeepw:android-utils:3.0.6'
 ```
 
 Changelog
 ============
+
+## v3.0.6
+
+Method count: 506
+
+JAR size: 46KB
+
+* Fix memory leak when calling methods in Utils class.
 
 ## v3.0.4
 
