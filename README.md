@@ -26,6 +26,13 @@ Gradle:
 compile 'com.github.jaydeepw:android-utils:3.0.6'
 ```
 
+Donations!
+==========
+* **Using Bitcoins**: If this project has helped you understand issues, be productive by using this library in your app or just being nice with me, you can always donate me Bitcoins at this address `3QJEmgqXsT1CFLtURYWxzmww59DdKYVwNk`
+
+* **Using Paypal**: [Pay Jay](https://www.paypal.me/jaydeepw)
+
+
 Changelog
 ============
 
