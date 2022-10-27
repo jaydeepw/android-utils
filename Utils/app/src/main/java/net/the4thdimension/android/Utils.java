@@ -1934,5 +1934,12 @@ public class Utils {
 
         return ext;
     }
+    
+    private boolean checkWriteExternalPermission()
+{
+    String permission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    int res = getContext().checkCallingOrSelfPermission(permission);
+    return (res == PackageManager.PERMISSION_GRANTED);            
+}
 
 }
